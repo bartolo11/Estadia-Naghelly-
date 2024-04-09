@@ -7,6 +7,7 @@
 //tabla por medio de esa id y elimina el 
 //registro completo de esta 
 if(!empty($_GET["id"])){
+    
     $id=$_GET["id"];
     $sql=$conexion->query(" delete from profesor where idProfesor=$id");
     if($sql==1){

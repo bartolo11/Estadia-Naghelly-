@@ -1,38 +1,81 @@
 <?php
-include "modelo/conexion.php";
-include "checarsession.php";
 
-// Obtener ID del material didáctico a modificar
-$id = $_GET["id"];
 
-// Consultar los datos actuales del material didáctico
-$sql = $conexion->query("SELECT * FROM material_didactico WHERE idMaterial = $id");
-$datos = $sql->fetch_object();
-$nombre_archivo = $datos->titulo;
-$ruta_archivo = 'material/' . $nombre_archivo;
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btnregistrar'])) {
+    $id = $_POST["id"];
+    $tipo_archivo = $_POST["tipo"];
+    $descripcion = $_POST["descripcion"];
+    $materia = $_POST["materia"];
+    $enlace = $_POST["enlace"];
+    $estilo = $_POST["estilo"];
+    $sesion = $_SESSION["rol"];
 
-// Obtener el valor del tipo de archivo
-$tipo_archivo = $datos->tipo;
+    if ($tipo_archivo == 'link'){
+        $sql_update = "UPDATE material_didactico SET titulo = '$enlace', descripción = '$descripcion', materia_asosiada = '$materia', categoria = '$estilo' WHERE idMaterial = $id";
+                $resultado = $conexion->query($sql_update);
+        
+                if ($resultado) {
+                    if ($sesion == 'Administrador@'){
+                        header("location: gestionMaterial.php");
+                      }
+                      else{
+                        header("location: gestionMaterialProfe.php");
+                      }
+                } else {
+                    echo "Ha ocurrido un error al actualizar los datos en la base de datos: " . mysqli_error($conexion);
+                } 
+    }
+        else{
 
-// Manejar la actualización del material didáctico
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verificar si se seleccionó la opción de cambiar el archivo
-    $opcion = $_POST["opcion"];
-    if ($opcion === "si") {
-        // Verificar el tipo de archivo y actualizar la base de datos y el archivo en el servidor
-        if ($tipo_archivo === 'pdf' || $tipo_archivo === 'doc' || $tipo_archivo === 'pptx') {
-            // Manejar la actualización del archivo en el servidor y en la base de datos
-            $nombreArchivoModificado = $_FILES["archivo_modificado"]["name"];
-            $rutaArchivoModificado = 'material/' . $nombreArchivoModificado;
-            move_uploaded_file($_FILES["archivo_modificado"]["tmp_name"], $rutaArchivoModificado);
-            $sqlUpdate = $conexion->prepare("UPDATE material_didactico SET nombre_archivo_modificado = ? WHERE idMaterial = ?");
-            $sqlUpdate->bind_param("si", $nombreArchivoModificado, $id);
-            $sqlUpdate->execute();
-            
-            // Puedes redirigir a una página de éxito o mostrar un mensaje
-            header("location:gestionMaterial.php");
-            exit(); // Terminar el script después de la redirección
-        }
+        
+            // Verificar si se seleccionó la opción de cambiar el archivo
+            if ($_POST['opcion'] == 'si' && isset($_FILES['archivo_modificado'])) {
+                // Ruta donde se guardarán los archivos
+                $directorio_destino = "material/";
+                
+                // Consulta para obtener el nombre del archivo actual
+                $sql = $conexion->query("SELECT * FROM material_didactico WHERE idMaterial = $id");
+                $datos = $sql->fetch_object();
+                $nombre_archivo_viejo = $datos->titulo;
+                
+                // Eliminar el archivo anterior
+                unlink($directorio_destino . $nombre_archivo_viejo);
+                
+                // Subir el nuevo archivo
+                $nombre_archivo_nuevo = $_FILES['archivo_modificado']['name'];
+                move_uploaded_file($_FILES['archivo_modificado']['tmp_name'], $directorio_destino . $nombre_archivo_nuevo);
+                
+                // Actualizar la base de datos con el nuevo nombre del archivo
+                $sql_update = "UPDATE material_didactico SET titulo = '$nombre_archivo_nuevo', descripción = '$descripcion', materia_asosiada = '$materia', categoria = '$estilo' WHERE idMaterial = $id";
+                $resultado = $conexion->query($sql_update);
+
+                if ($resultado) {
+                    if ($sesion == 'Administrador@'){
+                        header("location: gestionMaterial.php");
+                      }
+                      else{
+                        header("location: gestionMaterialProfe.php");
+                      }
+                    
+                } else {
+                echo "Ha ocurrido un error al actualizar los datos en la base de datos: " . mysqli_error($conexion);
+                }
+                
+            } else {
+                $sql_update = "UPDATE material_didactico SET descripción = '$descripcion', materia_asosiada = '$materia', categoria = '$estilo' WHERE idMaterial = $id";
+                $resultado = $conexion->query($sql_update);
+        
+                if ($resultado) {
+                    if ($sesion == 'Administrador@'){
+                        header("location: gestionMaterial.php");
+                      }
+                      else{
+                        header("location: gestionMaterialProfe.php");
+                      }
+                } else {
+                    echo "Ha ocurrido un error al actualizar los datos en la base de datos: " . mysqli_error($conexion);
+                } 
+            }
     }
 }
 ?>

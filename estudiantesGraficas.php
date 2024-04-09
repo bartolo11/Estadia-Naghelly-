@@ -1,8 +1,10 @@
 <?php 
   //Se genera la conexión con la base de datos
+  include "modelo/conexion.php";
   include "checarsessionA.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
+
   ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  
     <link href='css/nav.css' rel='stylesheet' type='text/css'>
     <link href='css/formulario.css' rel='stylesheet' type='text/css'>
+    
 </head>
 <body>
   
@@ -117,30 +119,104 @@
         </ul>
       </div>
     </div>
-    <div class="view">
+    <div class="view col-12 p-3 ">
       <!--img src="vistaA.jpeg"-->
       <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-	
-	<div class="row justify-content-center">
-		<div class=" ">		
-					<form method="POST" action="controlador/nani.php" class=" col-12 p-3 formulario" enctype="multipart/form-data">
-          <h2>Respaldo de la base de datos</h2>
-              <hr    color="#000000";>
-					    <h4>Desea generar una copia de seguridad de la base de datos del sistema </h4>
-					    
-					    
-					    <button type="submit" class="btn btn-outline-primary" name="restore">Generar</button>
-					</form>
-					
-				
-			
-		</div>
-	</div>
+        <div class="col-12 p-3">
+        <form action="" method="get" class="col-10 p-3 m-auto formulario">
+        <h3>Resultados individuales</h3>
+           <hr    color="#000000";>
+          <label for="buscarNombre" class="form-label">Buscar por apellido:</label>
+          <input type="text" class="form-control" id="buscarNombre" name="buscarNombre">
+          <button type="submit" class="btn btn-outline-primary">Buscar</button>
+        </form>
+        <?php
+        include "modelo/conexion.php";
+
+        // Verificar si hay un parámetro de búsqueda
+        $filtroNombre = isset($_GET['buscarNombre']) ? $_GET['buscarNombre'] : '';
+
+        // Modificar la consulta SQL para incluir el filtro por nombre solo si se proporciona un nombre
+        if (!empty($filtroNombre)) {
+          $sql = $conexion->query("SELECT * FROM estudiante WHERE apellidoPaterno LIKE '%$filtroNombre%'");
+        } else {
+          // Si no hay filtro de nombre, mostrar todos los registros
+          $sql = $conexion->query("SELECT * FROM estudiante");
+        }
+        ?>
+<!--Se genera el diseño de una tabla para organizar la información-->
+        <table class="table">
+          <thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
+            <tr>
+              <th scope="col">id</th>
+              <th scope="col">Nombres</th>
+              <th scope="col">Apellidos paternos</th>
+              <th scope="col">Apellidos maternos</th>
+              <th scope="col">Grupo</th>
+              <th scope="col">Consulta resultados</th>
+            </tr>
+          </thead>
+          <tbody class="table table table-striped table-hover table-bordered border-primary">
+            <!--Genera la llamada a la función conexión y genera una consulta a la base de datos de los registros 
+              y por medio de un ciclo obtiene los datos de los registros y los asigna a una variable para imprimirlos en pantalla 
+              -->
+            <?php
+              include "modelo/conexion.php";
+              
+              while($datos=$sql->fetch_object()){?>
+            <tr>
+              <td><?= $datos->idEstudiante ?></td>
+              <td><?= $datos->nombre ?></td>
+              <td><?= $datos->apellidoPaterno ?></td>
+              <td><?= $datos->apellidoMaterno ?></td>
+             
+              <td><?= $datos->grupo ?></td>
+              <td>
+                <!--Se crea un enlace por medio del cual se llama la función modificacionA.php
+                  el cual es un icono de color amarillo que indica la modificación  
+                  para llevar a cabo el llenado nuevo de los datos del registro el cual obtiene
+                  la información por medio de un dato de control de arrastre que es el id 
+                  -->
+                <a href="resultadoAlumno.php?id=<?= $datos->idEstudiante ?>" class="btn btn-small btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+            <path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/></svg>
+                </a>
+                
+              </td>
+            </tr>
+            <?php }
+              ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script>
+  // Función para validar la contraseña
+  function validarContrasena() {
+    var contrasena = document.getElementById('contraseña').value;
 
+    // Expresión regular que requiere al menos 8 caracteres, una mayúscula y un carácter especial
+    var regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    if (!regex.test(contrasena)) {
+      alert('La contraseña debe tener al menos 8 caracteres, una mayúscula y un carácter especial.');
+      return false;
+    }
+
+    return true;
+  }
+  function eliminar()
+      {
+        var respuesta = confirm("estas seguro que deseas eliminar");
+          return respuesta;
+      }
+    </script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</script>
 </body>
 </html>

@@ -5,6 +5,7 @@
   //condiciona la existencia de datos en el formulario 
   //para llevar a cabo el proceso de actualización 
     if(!empty($_POST["btnregistrar"])){
+      $sesion = $_SESSION["rol"];
         if(!empty($_POST["pregunta"]) and !empty($_POST["opcion1"]) and !empty($_POST["opcion2"]) and !empty($_POST["opcion3"])){
            
             //variables optenidas mediante el method post 
@@ -27,7 +28,13 @@
         
             if ($sql==1) {
               //redirecciona a la vista gestionA.php
-              header("location:gestionPreguntas.php");
+              
+              if ($sesion == 'Administrador@'){
+                header("location:gestionPreguntas.php");
+              }
+              else{
+                header("location:gestionPreguntasProfe.php");
+              }
             } else {
               //envía alerta sobre error
                 echo'<div class="alert alert-danger">Error al modificar pregunta </div>';

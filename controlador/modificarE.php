@@ -4,6 +4,7 @@
   //la vista modificacionA.php y así mismo 
   //condiciona la existencia de datos en el formulario 
   //para llevar a cabo el proceso de actualización 
+  $sesion = $_SESSION["rol"];
     if(!empty($_POST["btnregistrar"])){
         if(!empty($_POST["nombre"]) and !empty($_POST["apellidoP"]) and !empty($_POST["fechan"]) and !empty($_POST["correo"])){
            
@@ -24,8 +25,13 @@
             $sql=$conexion->query("update estudiante set nombre='$nombre', apellidoPaterno='$apellidoP', apellidoMaterno='$apellidoM', fechaNaci='$fechan' , genero='$genero', correo='$correo' where idEstudiante=$id");
         
             if ($sql==1) {
-              //redirecciona a la vista gestionA.php
-              header("location:gestionEs.php");
+              //redirecciona a la vista determinada por el rol
+              if ($sesion == 'Administrador@'){
+                header("location:gestionEs.php");
+              }
+              else{
+                header("location:gestionEsProfe.php");
+              }
             } else {
               //envía alerta sobre error
                 echo'<div class="alert alert-danger">Error al modificar estudiante </div>';

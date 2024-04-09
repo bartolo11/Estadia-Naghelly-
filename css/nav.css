@@ -3,7 +3,13 @@
 html {
   background-image: url(http://www.ultraimg.com/images/2UeGfhZ.jpg);
 }
+.notification-icon-has-notifications {
+  fill: red; /* Cambia el color a rojo si hay notificaciones */
+}
 
+.notification-icon-no-notifications {
+  fill: black; /* Puedes definir cualquier otro color si no hay notificaciones */
+}
 body {
   padding: 0px;
   margin: 0px;

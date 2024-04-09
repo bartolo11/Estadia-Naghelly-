@@ -7,9 +7,9 @@
 	if(isset($_POST['restore'])){
 		
 		//get post data
-		$server = $_POST['server'];
-		$username = $_POST['username'];
-		$password = $_POST['password'];
+		$server ="localhost";
+		$username = "root";
+		$password = "";
 		$dbname = $_POST['dbname'];
 
 		//moving the uploaded sql file

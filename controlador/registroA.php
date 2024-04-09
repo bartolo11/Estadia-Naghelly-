@@ -51,7 +51,8 @@ if(!empty($_POST["btnregistrar"])){
         //echo '</script>';
       }
     }else{
-        $sql=$conexion->query(" insert into estudiante(nombre,apellidoPaterno,apellidoMaterno,fechaNaci,genero,correo,contraseña)values('$nombre','$apellidoP','$apellidoM','$fechan','$genero','$correo','$contraseña')");
+        $grupo=$_POST["grupo"]; 
+        $sql=$conexion->query(" insert into estudiante(nombre,apellidoPaterno,apellidoMaterno,fechaNaci,genero,correo,contraseña,grupo)values('$nombre','$apellidoP','$apellidoM','$fechan','$genero','$correo','$contraseña','$grupo')");
     
         if ($sql==1) {
             //alerta de registro exitoso

@@ -140,53 +140,98 @@ $result2 = $conexion->query($sql2);
         </ul>
       </div>
     </div>
-    <div class="view">
-      
+    <div class="view col-12 p-3 ">
+      <!--img src="vistaA.jpeg"-->
       <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-        <form  class=" col-10 p-3 formulario" method="POST"  >
-          <h3>Test de identificación</h3>
-          <hr    color="#000000";>
-
-          <?php
-          include "modelo/conexion.php";
-          include "controlador/registroRespuestas.php";
-          $Npreguntas = 0;
-          
-          $sql = $conexion->query("SELECT * FROM pregunta");
+        <div class="col-12 p-3">
+        <form action="" method="get" class="col-10 p-3 m-auto formulario">
+           <h3>Material</h3>
+           <hr    color="#000000";>
+        </form>
         
-          while($datos = $sql->fetch_object()){
-            $Npreguntas++;
-            $id= $datos->idpreguntas;
-                   
-            
-        ?>
-        
-        <div class="mb-3">
-          <input type="hidden" name="idpreguntas<?= $id ?>" value="<?= $id ?>">
-          <label for="exampleInputEmail1" class="input_textual"><?= $datos->descripción_p ?></label>
-          <select class="form-select" name="categoria<?= $datos->idpreguntas ?>" id="categoria" required>
-            <option value="">Selecciona una opción</option>
-          <?php
-          $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $id");
-        
-          while($fila = $sqlOpciones->fetch_array()) {
-            echo "<option value='".$fila['categoria']."' >".$fila['descripción_op']."  </option>";
-        }
-        ?>
-    </select>
-</div>
         <?php
-        
-          }
-        ?>
-        <input type="hidden" name="Npreguntas" value="<?php echo $Npreguntas; ?>">
+include "modelo/conexion.php";
 
-        <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">registrar respuestas</button>
-      </form>
-     
+// Verificar si se ha enviado un filtro por materia
+if (isset($_GET['materia'])) {
+    $filtro_materia = $_GET['materia'];
+    $query = "SELECT * FROM material_didactico WHERE materia_asosiada = '$filtro_materia' ORDER BY fechaPublicacion ASC";
+} else {
+    $query = "SELECT * FROM material_didactico ORDER BY fechaPublicacion ASC"; //order by fecha_publicacion desc
+}
+
+$resultado = mysqli_query($conexion, $query);
+?>
+
+<form method="GET" action="" class="col-10 p-3 m-auto formulario">
+    <div class="mb-3">
+        <label for="materia" class="input_textual"><h4>Filtrar por Materia:</h4></label>
+        <select class="form-control" id="materia" name="materia" required>
+            <option value="">Selecciona una materia</option>
+            <option value="Habilidades Gerenciales">Habilidades Gerenciales</option>
+            <option value="Matemáticas para Ingeniería II">Matemáticas para Ingeniería II</option>
+            <option value="Sistemas Operativos">Sistemas Operativos</option>
+            <option value="Programación Orientada a Objetos">Programación Orientada a Objetos</option>
+            <option value="Interconexión de Redes">Interconexión de Redes</option>
+            <option value="Administración de Base de Datos">Administración de Base de Datos</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+    <a href="?clear=true" class="btn btn-secondary">Limpiar Filtro</a>
+</form>
+
+<table class="table">
+<thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
+<tr>
+    <th scope="col">Id </th>
+    <th scope="col">Materia Asociada</th>
+    <th scope="col">Nombre del Archivo</th>
+    <th scope="col">Tipo de Archivo</th>
+    <th scope="col">Descripción</th>
+    <th scope="col">Fecha de Publicación</th>
+    <th scope="col">Descargar</th>
+    <th scope="col">Categoria</th>
+    
+</tr>
+</thead>
+<tbody class="table table table-striped table-hover table-bordered border-primary">
+<?php
+while ($fila = mysqli_fetch_assoc($resultado)) {
+  $nombre = $fila['idMaterial'];
+    echo '<tr>';
+    echo '<td>' . $fila['idMaterial'] . '</td>';
+    echo '<td>' . $fila['materia_asosiada'] . '</td>';
+    echo '<td>' . $fila['titulo'] . '</td>';
+    echo '<td>' . $fila['tipo'] . '</td>'; // Tipo de archivo
+    echo '<td>' . $fila['descripción'] . '</td>'; // Descripción
+    echo '<td>' . $fila['fechaPublicacion'] . '</td>'; // Fecha de Publicación
+    $ruta_archivo = 'material/' . $fila['titulo'];
+    echo '<td><a href="' . $ruta_archivo . '" download>Descargar</a></td>';
+    echo '<td>' . $fila['categoria'] . '</td>';
+    ?>
+      
+    <?php
+    echo '</tr>';
+}
+?>
+</tbody>
+</table>
+      </div>
+    </div>
     </div>
   </div>
 </div>
+<script>
+  // Función para validar la contraseña
+  function eliminar()
+      {
+        var respuesta = confirm("estas seguro que deseas eliminar");
+          return respuesta;
+      }
+    </script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -71,7 +71,7 @@ $result2 = $conexion->query($sql2);
             <a href="MaterialEstCom.php">Material recomendado<a></li>
              <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
             <path d="M0 96C0 43 43 0 96 0h96V190.7c0 13.4 15.5 20.9 26 12.5L272 160l54 43.2c10.5 8.4 26 .9 26-12.5V0h32 32c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32H384 96c-53 0-96-43-96-96V96zM64 416c0 17.7 14.3 32 32 32H352V384H96c-17.7 0-32 14.3-32 32z"/>
-          </svg> <a href="MaterialEst.php"> Material<a> </li>
+          </svg> <a href="MaterialEst.php">  Material<a> </li>
           <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="20" viewBox="0 0 640 512">
             <path d="M0 24C0 10.7 10.7 0 24 0H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24C10.7 48 0 37.3 0 24zM0 488c0-13.3 10.7-24 24-24H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24zM83.2 160a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM32 320c0-35.3 28.7-64 64-64h96c12.2 0 23.7 3.4 33.4 9.4c-37.2 15.1-65.6 47.2-75.8 86.6H64c-17.7 0-32-14.3-32-32zm461.6 32c-10.3-40.1-39.6-72.6-77.7-87.4c9.4-5.5 20.4-8.6 32.1-8.6h96c35.3 0 64 28.7 64 64c0 17.7-14.3 32-32 32H493.6zM391.2 290.4c32.1 7.4 58.1 30.9 68.9 61.6c3.5 10 5.5 20.8 5.5 32c0 17.7-14.3 32-32 32h-224c-17.7 0-32-14.3-32-32c0-11.2 1.9-22 5.5-32c10.5-29.7 35.3-52.8 66.1-60.9c7.8-2.1 16-3.1 24.5-3.1h96c7.4 0 14.7 .8 21.6 2.4zm44-130.4a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM321.6 96a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/>
           </svg><a href="respuestas.php"> Test<a></li>
@@ -140,53 +140,17 @@ $result2 = $conexion->query($sql2);
         </ul>
       </div>
     </div>
-    <div class="view">
-      
-      <div class="container-fluid row">
-        <!--El formulario envía datos por medio del method post -->
-        <form  class=" col-10 p-3 formulario" method="POST"  >
-          <h3>Test de identificación</h3>
-          <hr    color="#000000";>
-
-          <?php
-          include "modelo/conexion.php";
-          include "controlador/registroRespuestas.php";
-          $Npreguntas = 0;
-          
-          $sql = $conexion->query("SELECT * FROM pregunta");
-        
-          while($datos = $sql->fetch_object()){
-            $Npreguntas++;
-            $id= $datos->idpreguntas;
-                   
-            
-        ?>
-        
-        <div class="mb-3">
-          <input type="hidden" name="idpreguntas<?= $id ?>" value="<?= $id ?>">
-          <label for="exampleInputEmail1" class="input_textual"><?= $datos->descripción_p ?></label>
-          <select class="form-select" name="categoria<?= $datos->idpreguntas ?>" id="categoria" required>
-            <option value="">Selecciona una opción</option>
-          <?php
-          $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $id");
-        
-          while($fila = $sqlOpciones->fetch_array()) {
-            echo "<option value='".$fila['categoria']."' >".$fila['descripción_op']."  </option>";
-        }
-        ?>
-    </select>
-</div>
-        <?php
-        
-          }
-        ?>
-        <input type="hidden" name="Npreguntas" value="<?php echo $Npreguntas; ?>">
-
-        <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">registrar respuestas</button>
-      </form>
-     
+    <div class=" col-10 p-3 view" >
+    <div id="notifications-container" style="margin-top: 20px;"></div>
+      <img src="img/vistaA.jpeg">            
     </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+<script>
+
+
 </body>
 </html>

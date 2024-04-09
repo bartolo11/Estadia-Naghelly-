@@ -9,10 +9,10 @@ session_start();
 //en qué sector de la base de datos
 //localice
 if($_SESSION['rol']=='prof@'){
-    header('Location: ../home.php');
+    header('Location: ../homeProfesor.php');
 }
-if($_SESSION['rol']=='Enfermer@'){
-    header('Location: ../homeE.php');
+if($_SESSION['rol']=='estudiante'){
+    header('Location: ../homeEs.php');
 }
 if($_SESSION['rol']=='Administrador@'){
     header('Location: ../homeAd.php');

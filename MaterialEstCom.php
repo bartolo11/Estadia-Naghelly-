@@ -140,53 +140,90 @@ $result2 = $conexion->query($sql2);
         </ul>
       </div>
     </div>
-    <div class="view">
-      
+    <div class="view col-12 p-3 ">
+      <!--img src="vistaA.jpeg"-->
       <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-        <form  class=" col-10 p-3 formulario" method="POST"  >
-          <h3>Test de identificación</h3>
-          <hr    color="#000000";>
-
-          <?php
-          include "modelo/conexion.php";
-          include "controlador/registroRespuestas.php";
-          $Npreguntas = 0;
-          
-          $sql = $conexion->query("SELECT * FROM pregunta");
+        <div class="col-12 p-3">
+        <form action="" method="get" class="col-10 p-3 m-auto formulario">
+           <h3>Material recomendado</h3>
+           <hr    color="#000000";>
+        </form>
         
-          while($datos = $sql->fetch_object()){
-            $Npreguntas++;
-            $id= $datos->idpreguntas;
-                   
-            
-        ?>
-        
-        <div class="mb-3">
-          <input type="hidden" name="idpreguntas<?= $id ?>" value="<?= $id ?>">
-          <label for="exampleInputEmail1" class="input_textual"><?= $datos->descripción_p ?></label>
-          <select class="form-select" name="categoria<?= $datos->idpreguntas ?>" id="categoria" required>
-            <option value="">Selecciona una opción</option>
-          <?php
-          $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $id");
-        
-          while($fila = $sqlOpciones->fetch_array()) {
-            echo "<option value='".$fila['categoria']."' >".$fila['descripción_op']."  </option>";
-        }
-        ?>
-    </select>
-</div>
         <?php
-        
-          }
-        ?>
-        <input type="hidden" name="Npreguntas" value="<?php echo $Npreguntas; ?>">
+include "modelo/conexion.php";
 
-        <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">registrar respuestas</button>
-      </form>
-     
+// Verificar si se ha enviado un filtro por materia
+
+    $query = "SELECT * FROM asignar_material WHERE idEst = '$idE' ";
+
+
+
+
+$resultado = mysqli_query($conexion, $query);
+?>
+
+
+
+<table class="table">
+<thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
+<tr>
+    <th scope="col">Id </th>
+    <th scope="col">Materia Asociada</th>
+    <th scope="col">Nombre del Archivo</th>
+    
+    <th scope="col">Descripción</th>
+    
+    <th scope="col">Descargar</th>
+    <th scope="col">Categoria</th>
+    <th scope="col">Estado</th>
+    <th scope="col">Marca revisado</th>
+    
+</tr>
+</thead>
+<tbody class="table table table-striped table-hover table-bordered border-primary">
+<?php
+while ($fila = mysqli_fetch_assoc($resultado)) {
+  $nombre = $fila['idAsignarMaterial'];
+    echo '<tr>';
+    echo '<td>' . $fila['idAsignarMaterial'] . '</td>';
+    echo '<td>' . $fila['materiaA'] . '</td>';
+    echo '<td>' . $fila['nombreM'] . '</td>';
+   
+    echo '<td>' . $fila['descripciónM'] . '</td>'; // Descripción
+    
+    $ruta_archivo = 'material/' . $fila['nombreM'];
+    echo '<td><a href="' . $ruta_archivo . '" download>Descargar</a></td>';
+    echo '<td>' . $fila['estiloAprendizaje'] . '</td>';
+    echo '<td>' . $fila['estado'] . '</td>';
+    ?>
+    <td>
+            <a href="MaterialEstCom.php?id=<?= $nombre ?>" class="btn btn-small btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+            </a>
+           </td>
+      
+    <?php
+    echo '</tr>';
+}
+?>
+</tbody>
+</table>
+      </div>
+    </div>
     </div>
   </div>
 </div>
+<script>
+  // Función para validar la contraseña
+  function eliminar()
+      {
+        var respuesta = confirm("estas seguro que deseas eliminar");
+          return respuesta;
+      }
+    </script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
 </body>
 </html>

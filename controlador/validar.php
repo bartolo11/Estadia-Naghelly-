@@ -2,6 +2,10 @@
   
   $admin="Administrador@";
   $prof="prof@";      //valor creado dentro de la funcion
+  $est="estudiante";  
+  $nivelA="Admin";
+  $nivelP="Profe";
+  $nivelE="Estudiante";
 
   $usuario=$_POST['usuario'];   //valor de la cedula trasferido por el methgod post dese el index
   $clave=$_POST['clave'];       //valor de la contraseña trasferido por el methgod post dese el index
@@ -18,11 +22,12 @@
   //si la consulta regresa un registro este proceso asigna 
   //los valores y direcciona al home establecido
   if($datos = $consulta->fetch_object()){
-    $_SESSION["id"]=$datos->idProfesor;
+    $_SESSION["idA"]=$datos->idProfesor;
     $_SESSION["nombre"]=$datos->nombre;
     $_SESSION["app"]=$datos->apellidoP;
     $_SESSION['rol']=$prof;
-    header('Location: ../navBar.php');
+    $_SESSION['nivelP']=$nivelP;
+    header('Location: ../homeProfesor.php');
   }else{ //si no encontro el registro 
   
   
@@ -38,14 +43,38 @@
         $_SESSION["nombre"]=$datos->nombreAdmin;
         $_SESSION["app"]=$datos->apellidoPA;
         $_SESSION['rol']=$admin;
+        $_SESSION['nivelA']=$nivelA;
+
         header('Location: ../homeAd.php');
         ;
       }else{
-        //alerta de datos incorrectos
-        echo '<script type="text/javascript">'; 
-        echo 'alert("Usuario o contraseña son incorrectos");'; 
-        echo 'window.location = "../l.php";';
-        echo '</script>';
+            //si no encontro el registro 
+      
+      
+      
+            //consulta la existencia del registro dentro de la tabla administrador
+      //con los datos del method post
+          $consulta2= $conexion -> query ("SELECT * FROM estudiante WHERE correo='$usuario' AND contraseña='$clave'");
+        
+          //si la consulta regresa un registro este proceso asigna 
+      //los valores y direcciona al home establecido
+          if($datos = $consulta2->fetch_object()){
+            $_SESSION["idA"]=$datos->idEstudiante;
+            $_SESSION["nombre"]=$datos->nombre;
+            $_SESSION["app"]=$datos->apellidoPaterno;
+            $_SESSION["grupo"]=$datos->grupo;
+            $_SESSION['rol']=$est;
+            $_SESSION['nivelE']=$nivelE;
+
+            header('Location: ../homeEs.php');
+            ;
+          }else{
+            //alerta de datos incorrectos
+            echo '<script type="text/javascript">'; 
+            echo 'alert("Usuario o contraseña son incorrectos");'; 
+            echo 'window.location = "../l.php";';
+            echo '</script>';
+          }
       }
     }
     

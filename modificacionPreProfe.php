@@ -1,6 +1,6 @@
 <?php
   include "modelo/conexion.php";
-  include "checarsessionA.php";
+  include "checarsession.php";
   
   $id = $_GET["id"];
   $sql = $conexion->query("SELECT * FROM pregunta WHERE idpreguntas = $id");

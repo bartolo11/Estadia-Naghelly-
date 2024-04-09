@@ -6,7 +6,7 @@ error_reporting(0);
 $inactive_time = 60 * 60;
 
 // Verifica si la sesión existe y si el usuario está autenticado
-if (!isset($_SESSION['nivelP'])) {
+if (!isset($_SESSION['nivelE'])) {
     echo '
     <script> 
         alert("Por favor, debes iniciar sesión como profesor");

@@ -1,35 +1,52 @@
 <?php 
   //Se genera la conexión con la base de datos
+
+
   include "checarsessionA.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
-  ?>
+ 
+include "modelo/conexion.php";
+
+// ID del usuario específico
+$idUsuarioEspecifico= $_GET["id"];  // Aquí debes poner el ID del usuario específico
+ 
+// Consulta SQL para contar las ocurrencias de cada categoría para el usuario específico
+$sql = "SELECT categoria, COUNT(*) as conteo FROM rtest WHERE idUsuario = $idUsuarioEspecifico GROUP BY categoria";
+
+$result = $conexion->query($sql);
+
+// Array para almacenar las categorías y sus conteos
+$categorias = [];
+$conteos = [];
+
+// Procesar los resultados de la consulta
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administrador</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  
-    <link href='css/nav.css' rel='stylesheet' type='text/css'>
-    <link href='css/formulario.css' rel='stylesheet' type='text/css'>
+  <link href='css/nav.css' rel='stylesheet' type='text/css'>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   
 <div class="page">
   <div class="pageHeader">
     <div class="title">Sistema web identificación de estilos de aprendizaje</div>
-    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i></svg>
-          <?php   echo  $_SESSION["nombre"];
+    <div class="userPanel"><span class="username"><?php   echo  $_SESSION["nombre"];
             ?></span></div>
   </div>
   <div class="main">
     <div class="nav">
-      
       <div class="menu">
-      <div class="title"><center>Menu</center></div>
-      <ul>
+        <div class="title"><center>Menu</center></div>
+        <ul>
           <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
             <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
           </svg><a href="controlador/loginrol.php"> Inicio<a></li>
@@ -117,30 +134,84 @@
         </ul>
       </div>
     </div>
-    <div class="view">
-      <!--img src="vistaA.jpeg"-->
-      <div class="container-fluid row">
-        <!--El formulario envía datos por medio del method post -->
-	
-	<div class="row justify-content-center">
-		<div class=" ">		
-					<form method="POST" action="controlador/nani.php" class=" col-12 p-3 formulario" enctype="multipart/form-data">
-          <h2>Respaldo de la base de datos</h2>
-              <hr    color="#000000";>
-					    <h4>Desea generar una copia de seguridad de la base de datos del sistema </h4>
-					    
-					    
-					    <button type="submit" class="btn btn-outline-primary" name="restore">Generar</button>
-					</form>
-					
-				
-			
-		</div>
-	</div>
+    <div class=" col-10 p-3 view" >
+    <?php if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $categorias[] = $row["categoria"];
+        $conteos[] = $row["conteo"];
+    }
+} else {
+    echo "No existen registro de sus respuestas.<br>";
+}
+// Consulta SQL para obtener la categoría de la tabla_categoria
+$sqlCategoria = "SELECT categoria FROM tabla_categorias WHERE idcategoria = $idUsuarioEspecifico";
+$resultCategoria = $conexion->query($sqlCategoria);
+$categoriaMensaje = "";
+
+if ($resultCategoria->num_rows > 0) {
+    $rowCategoria = $resultCategoria->fetch_assoc();
+    $categoriaMensaje = "La categoría del estudiante es: " . $rowCategoria["categoria"];
+    echo "$categoriaMensaje ;";
+} else {
+    $categoriaMensaje = "No se encontró ninguna categoría asociada al estudiante.";
+    echo "$categoriaMensaje";
+}
+
+// Colores de las barras (puedes ajustar estos colores según tus preferencias)
+$colores = [
+    'rgba(255, 99, 132, 0.5)',
+    'rgba(54, 162, 235, 0.5)',
+    'rgba(255, 206, 86, 0.5)',
+    'rgba(75, 192, 192, 0.5)',
+    'rgba(153, 102, 255, 0.5)',
+    'rgba(255, 159, 64, 0.5)'
+];
+
+// Cerrar conexión
+$conexion->close();?>
+    <div style="width: 400px; height: 400px;">
+        <canvas id="graficoCategorias"></canvas>
+
+        <form action="estudiantesGraficas.php" method="get">
+          <button type="submit" class="btn btn-outline-primary">Volver a la vista anterior</button>
+        </form>
+    </div>        
     </div>
+      <!-- Contenedor del gráfico -->
+    
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script>
+        // Datos para el gráfico
+        var categorias = <?php echo json_encode($categorias); ?>;
+        var conteos = <?php echo json_encode($conteos); ?>;
+        var colores = <?php echo json_encode($colores); ?>;
 
+        // Configuración del gráfico
+        var config = {
+            type: 'bar',
+            data: {
+                labels: categorias,
+                datasets: [{
+                    label: 'Número de ocurrencias',
+                    data: conteos,
+                    backgroundColor: colores, // Usar los colores definidos
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Crear el gráfico
+        var ctx = document.getElementById('graficoCategorias').getContext('2d');
+        var myChart = new Chart(ctx, config);
+    </script>
 </body>
 </html>
