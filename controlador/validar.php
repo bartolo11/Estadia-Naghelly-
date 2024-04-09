@@ -44,7 +44,7 @@
         //alerta de datos incorrectos
         echo '<script type="text/javascript">'; 
         echo 'alert("Usuario o contraseña son incorrectos");'; 
-        echo 'window.location = "../login.php";';
+        echo 'window.location = "../l.php";';
         echo '</script>';
       }
     }

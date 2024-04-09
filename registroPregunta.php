@@ -1,5 +1,6 @@
 <?php 
   //Se genera la conexión con la base de datos
+  include "modelo/conexion.php";
   include "checarsession.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
@@ -12,6 +13,7 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link href='css/nav.css' rel='stylesheet' type='text/css'>
     <link href='css/formulario.css' rel='stylesheet' type='text/css'>
 </head>
@@ -20,7 +22,7 @@
 <div class="page">
   <div class="pageHeader">
     <div class="title">Sistema web identificación de estilos de aprendizaje</div>
-    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i></svg>
+    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i>
           <?php   echo  $_SESSION["nombre"];
             ?></span></div>
   </div>
@@ -111,29 +113,70 @@
       </div>
     </div>
     <div class="view">
-      <!--img src="vistaA.jpeg"-->
+      
       <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-	
-	<div class="row justify-content-center">
-		<div class=" ">		
-					<form method="POST" action="controlador/nani.php" class=" col-12 p-3 formulario" enctype="multipart/form-data">
-          <h2>Respaldo de la base de datos</h2>
-              <hr    color="#000000";>
-					    <h4>Desea generar una copia de seguridad de la base de datos del sistema </h4>
-					    
-					    
-					    <button type="submit" class="btn btn-outline-primary" name="restore">Generar</button>
-					</form>
-					
-				
-			
-		</div>
-	</div>
+        <form  class=" col-10 p-3 formulario" method="POST"  >
+          <h3>Registro de pregunta</h3>
+          <hr    color="#000000";>
+
+          <?php
+          include "modelo/conexion.php";
+          include "controlador/registroPre.php";
+          ?>
+          <!--Se genera la llamada a la función registroA.php la cual genera el registro de Administradores por medio
+            del botón registrar del formulario. 
+            Así como a la función conexion.php la cual contiene el código para la conexión a la base de datos
+            -->
+        
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="input_textual">Pregunta</label>
+            <!--Genera el espacio para introducir el nombre del administrador y envía el dato nombre
+              por medio del method post del formulario
+              -->
+            <input type="text" class="form-control" name="pregunta" required>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="input_textual">Opcion Visual</label>
+            <!--Genera el espacio para introducir el nombre del administrador y envía el dato nombre
+              por medio del method post del formulario
+              -->
+            <input type="text" class="form-control" name="opcionA" required>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="input_textual">Opcion Auditivo</label>
+            <!--Genera el espacio para introducir el nombre del administrador y envía el dato nombre
+              por medio del method post del formulario
+              -->
+            <input type="text" class="form-control" name="opcionB" required>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="input_textual">Opcion kinestesico</label>
+            <!--Genera el espacio para introducir el nombre del administrador y envía el dato nombre
+              por medio del method post del formulario
+              -->
+            <input type="text" class="form-control" name="opcionC" required>
+          </div>
+          <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">Registrar</button>
+        </form>    
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script>
+  // Función para validar la contraseña
+  function validarContrasena() {
+    var contrasena = document.getElementById('contraseña').value;
 
+    // Expresión regular que requiere al menos 8 caracteres, una mayúscula y un carácter especial
+    var regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    if (!regex.test(contrasena)) {
+      alert('La contraseña debe tener al menos 8 caracteres, una mayúscula y un carácter especial.');
+      return false;
+    }
+
+    return true;
+  }
+</script>
 </body>
 </html>

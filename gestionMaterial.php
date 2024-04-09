@@ -1,8 +1,12 @@
 <?php 
   //Se genera la conexión con la base de datos
+  include "modelo/conexion.php";
   include "checarsession.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
+  
+  include "controlador/eliminarMaterial.php";
+
   ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  
     <link href='css/nav.css' rel='stylesheet' type='text/css'>
     <link href='css/formulario.css' rel='stylesheet' type='text/css'>
+    
 </head>
 <body>
   
@@ -110,30 +114,126 @@
         </ul>
       </div>
     </div>
-    <div class="view">
+    <div class="view col-12 p-3 ">
       <!--img src="vistaA.jpeg"-->
       <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-	
-	<div class="row justify-content-center">
-		<div class=" ">		
-					<form method="POST" action="controlador/nani.php" class=" col-12 p-3 formulario" enctype="multipart/form-data">
-          <h2>Respaldo de la base de datos</h2>
-              <hr    color="#000000";>
-					    <h4>Desea generar una copia de seguridad de la base de datos del sistema </h4>
-					    
-					    
-					    <button type="submit" class="btn btn-outline-primary" name="restore">Generar</button>
-					</form>
-					
-				
-			
-		</div>
-	</div>
+        <div class="col-12 p-3">
+        <form action="" method="get" class="col-10 p-3 m-auto formulario">
+           <h3>Gestion Material</h3>
+           <hr    color="#000000";>
+        </form>
+        
+        <?php
+include "modelo/conexion.php";
+
+// Verificar si se ha enviado un filtro por materia
+if (isset($_GET['materia'])) {
+    $filtro_materia = $_GET['materia'];
+    $query = "SELECT * FROM material_didactico WHERE materia_asosiada = '$filtro_materia' ORDER BY fechaPublicacion ASC";
+} else {
+    $query = "SELECT * FROM material_didactico ORDER BY fechaPublicacion ASC"; //order by fecha_publicacion desc
+}
+
+$resultado = mysqli_query($conexion, $query);
+?>
+
+<form method="GET" action="" class="col-10 p-3 m-auto formulario">
+    <div class="mb-3">
+        <label for="materia" class="input_textual"><h4>Filtrar por Materia:</h4></label>
+        <select class="form-control" id="materia" name="materia" required>
+            <option value="">Selecciona una materia</option>
+            <option value="Habilidades Gerenciales">Habilidades Gerenciales</option>
+            <option value="Matemáticas para Ingeniería II">Matemáticas para Ingeniería II</option>
+            <option value="Sistemas Operativos">Sistemas Operativos</option>
+            <option value="Programación Orientada a Objetos">Programación Orientada a Objetos</option>
+            <option value="Interconexión de Redes">Interconexión de Redes</option>
+            <option value="Administración de Base de Datos">Administración de Base de Datos</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+    <a href="?clear=true" class="btn btn-secondary">Limpiar Filtro</a>
+</form>
+
+<table class="table">
+<thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
+<tr>
+    <th scope="col">Id </th>
+    <th scope="col">Materia Asociada</th>
+    <th scope="col">Nombre del Archivo</th>
+    <th scope="col">Tipo de Archivo</th>
+    <th scope="col">Descripción</th>
+    <th scope="col">Fecha de Publicación</th>
+    <th scope="col">Descargar</th>
+    <th scope="col">Acciones</th>
+</tr>
+</thead>
+<tbody class="table table table-striped table-hover table-bordered border-primary">
+<?php
+while ($fila = mysqli_fetch_assoc($resultado)) {
+  $nombre = $fila['idMaterial'];
+    echo '<tr>';
+    echo '<td>' . $fila['idMaterial'] . '</td>';
+    echo '<td>' . $fila['materia_asosiada'] . '</td>';
+    echo '<td>' . $fila['titulo'] . '</td>';
+    echo '<td>' . $fila['tipo'] . '</td>'; // Tipo de archivo
+    echo '<td>' . $fila['descripción'] . '</td>'; // Descripción
+    echo '<td>' . $fila['fechaPublicacion'] . '</td>'; // Fecha de Publicación
+    $ruta_archivo = 'material/' . $fila['titulo'];
+    echo '<td><a href="' . $ruta_archivo . '" download>Descargar</a></td>';
+    ?>
+      <td>
+            <!--Se crea un enlace por medio del cual se llama la función modificacionA.php
+              el cual es un icono de color amarillo que indica la modificación  
+              para llevar a cabo el llenado nuevo de los datos del registro el cual obtiene
+              la información por medio de un dato de control de arrastre que es el id 
+              -->
+            <a href="modificacionMaterial.php?id=<?= $nombre ?>" class="btn btn-small btn-warning">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" />
+        <path d="M16 5l3 3" />
+        <path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" />
+    </svg>
+</a>
+
+            <!--Se crea un enlace por medio del cual se llama a sí misma 
+              la pagina para llevar a cabo la eliminación del registro además de
+              que llama la funcion Script con el onclick para llevar a 
+              cabo la función de eliminación 
+              -->
+            <a onclick="return eliminar()" href="gestionEs.php?id=<?= $datos->idEstudiante ?>"  class="btn btn-small btn-danger" >
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="10" y1="11" x2="10" y2="17" />
+                <line x1="14" y1="11" x2="14" y2="17" />
+                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+              </svg>
+            </a>
+          </td>
+    <?php
+    echo '</tr>';
+}
+?>
+</tbody>
+</table>
+      </div>
+    </div>
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script>
+  // Función para validar la contraseña
+  function eliminar()
+      {
+        var respuesta = confirm("estas seguro que deseas eliminar");
+          return respuesta;
+      }
+    </script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 </body>
 </html>

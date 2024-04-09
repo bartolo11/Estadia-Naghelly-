@@ -1,5 +1,6 @@
 <?php 
   //Se genera la conexión con la base de datos
+  include "modelo/conexion.php";
   include "checarsession.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
@@ -12,6 +13,7 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link href='css/nav.css' rel='stylesheet' type='text/css'>
     <link href='css/formulario.css' rel='stylesheet' type='text/css'>
 </head>
@@ -20,7 +22,7 @@
 <div class="page">
   <div class="pageHeader">
     <div class="title">Sistema web identificación de estilos de aprendizaje</div>
-    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i></svg>
+    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i>
           <?php   echo  $_SESSION["nombre"];
             ?></span></div>
   </div>
@@ -111,29 +113,51 @@
       </div>
     </div>
     <div class="view">
-      <!--img src="vistaA.jpeg"-->
+      
       <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-	
-	<div class="row justify-content-center">
-		<div class=" ">		
-					<form method="POST" action="controlador/nani.php" class=" col-12 p-3 formulario" enctype="multipart/form-data">
-          <h2>Respaldo de la base de datos</h2>
-              <hr    color="#000000";>
-					    <h4>Desea generar una copia de seguridad de la base de datos del sistema </h4>
-					    
-					    
-					    <button type="submit" class="btn btn-outline-primary" name="restore">Generar</button>
-					</form>
-					
-				
-			
-		</div>
-	</div>
+        <form  class=" col-10 p-3 formulario" method="POST"  >
+          <h3>Test de identificación</h3>
+          <hr    color="#000000";>
+
+          <?php
+          include "modelo/conexion.php";
+          include "controlador/registroRespuestas.php";
+          $Npreguntas = 0;
+          $sql = $conexion->query("SELECT * FROM pregunta");
+        
+          while($datos = $sql->fetch_object()){
+            $Npreguntas++;
+            $id= $datos->idpreguntas;
+                   
+            
+        ?>
+        
+        <div class="mb-3">
+          <input type="hidden" name="idpreguntas<?= $id ?>" value="<?= $id ?>">
+          <label for="exampleInputEmail1" class="input_textual"><?= $datos->descripción_p ?></label>
+          <select class="form-select" name="categoria<?= $datos->idpreguntas ?>" id="categoria" required>
+            <option value="">Selecciona una opción</option>
+          <?php
+          $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $id");
+        
+          while($fila = $sqlOpciones->fetch_array()) {
+            echo "<option value='".$fila['categoria']."' >".$fila['descripción_op']."  </option>";
+        }
+        ?>
+    </select>
+</div>
+        <?php
+        
+          }
+        ?>
+        <input type="hidden" name="Npreguntas" value="<?php echo $Npreguntas; ?>">
+
+        <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">registrar respuestas</button>
+      </form>
+     
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
 </body>
 </html>

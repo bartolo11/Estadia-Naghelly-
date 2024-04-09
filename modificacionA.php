@@ -2,6 +2,7 @@
   //Se llama a la función que genera la 
   //conexión con la base de datos 
   include "modelo/conexion.php";
+  include "checarsession.php";
   //Se genera la asignación del valor de la id que 
   //envía el boton de la modificación
   $id = $_GET["id"];

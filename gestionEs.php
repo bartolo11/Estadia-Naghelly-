@@ -1,6 +1,7 @@
 <?php 
   //Se genera la conexión con la base de datos
   include "modelo/conexion.php";
+  include "checarsession.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
   
@@ -55,7 +56,16 @@
             <path d="M13 19h5" />
             <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
             <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-          </svg>  Cuestionario</li>
+          </svg>   <a href="registroPregunta.php"> Resgistrar Preguntas<a></li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-forms" width="23" height="23" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 3a3 3 0 0 0 -3 3v12a3 3 0 0 0 3 3" />
+            <path d="M6 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3" />
+            <path d="M13 7h7a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-7" />
+            <path d="M5 7h-1a1 1 0 0 0 -1 1v8a1 1 0 0 0 1 1h1" />
+            <path d="M17 12h.01" />
+            <path d="M13 12h.01" />
+          </svg><a href="gestionPreguntas.php"> gestion Preguntas<a></li>
           <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
             <path d="M0 96C0 43 43 0 96 0h96V190.7c0 13.4 15.5 20.9 26 12.5L272 160l54 43.2c10.5 8.4 26 .9 26-12.5V0h32 32c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32H384 96c-53 0-96-43-96-96V96zM64 416c0 17.7 14.3 32 32 32H352V384H96c-17.7 0-32 14.3-32 32z"/></svg>  Administrar Material</li>
           <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bell-ringing-2" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
