@@ -13,11 +13,7 @@
             //Datos del administrador 
             $id=$_POST["id"]; 
             $titulo=$_POST["titulo"];
-            $descripcion=$_POST["descripcion"];
-            
-
-            
-          
+            $descripcion=$_POST["descripcion"];       
             //realiza el proceso de modificacion de los datos del registro por los nuevos
             $sql=$conexion->query("update novedades set tituloNov='$titulo', descripciónNov='$descripcion' where idnovedades=$id");
         
@@ -39,4 +35,4 @@
             echo'<div class="alert alert-warning">Campos vacios</div>';
         }
     }
-    ?>
+  ?>

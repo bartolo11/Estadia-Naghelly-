@@ -1,7 +1,7 @@
 <?php
   //condiciona el que se haya presionado el botón
   //para hacer la modificación del registro en 
-  //la vista modificacionA.php y así mismo 
+  //la vista modificacionEncuesta.php y así mismo 
   //condiciona la existencia de datos en el formulario 
   //para llevar a cabo el proceso de actualización 
   $sesion = $_SESSION["rol"];
@@ -9,8 +9,8 @@
         if(!empty($_POST["titulo"]) ){
            
             //variables optenidas mediante el method post 
-            //del formulario de modificacionA.php 
-            //Datos del administrador 
+            //del formulario de modificacionEncuesta.php 
+            //Datos de la encuesta  
             $id=$_POST["id"]; 
             $titulo=$_POST["titulo"];
                  
@@ -35,4 +35,4 @@
             echo'<div class="alert alert-warning">Campos vacios</div>';
         }
     }
-    ?>
+?>

@@ -96,8 +96,8 @@ $tipo_archivo = $datos->tipo;
         <select class="form-control" id="estilo" name="estilo" required>
             <option disabled selected>Selecciona una categoria</option>
             <option value="visual" <?= ($datos->categoria == 'visual') ? 'selected' : '' ?>>Visual</option>
-            <option value="auditivo" <?= ($datos->categoria == 'auditiva') ? 'selected' : '' ?>>Auditivo</option>
-            <option value="kinestesico" <?= ($datos->categoria == 'kinestesica') ? 'selected' : '' ?>>Kinestesico</option>
+            <option value="auditivo" <?= ($datos->categoria == 'auditivo') ? 'selected' : '' ?>>Auditivo</option>
+            <option value="kinestesico" <?= ($datos->categoria == 'kinestesico') ? 'selected' : '' ?>>Kinestesico</option>
         </select>
     </div>
     
@@ -154,4 +154,3 @@ $tipo_archivo = $datos->tipo;
 </script>
 </body>
 </html>
-

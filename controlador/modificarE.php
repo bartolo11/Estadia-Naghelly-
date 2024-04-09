@@ -5,12 +5,12 @@
   //condiciona la existencia de datos en el formulario 
   //para llevar a cabo el proceso de actualización 
   $sesion = $_SESSION["rol"];
-    if(!empty($_POST["btnregistrar"])){
+    if(!empty($_POST["btnregistrar"])){  //valida el que se presionara el boton para la modificacion
         if(!empty($_POST["nombre"]) and !empty($_POST["apellidoP"]) and !empty($_POST["fechan"]) and !empty($_POST["correo"])){
            
             //variables optenidas mediante el method post 
-            //del formulario de modificacionA.php 
-            //Datos del administrador 
+            //del formulario de modificacionE.php o modificacionEProfe.php 
+            //Datos del estudiante 
             $id=$_POST["id"];                    
             $nombre=$_POST["nombre"];          //nombre  
             $apellidoP=$_POST["apellidoP"];    //apellido paterno 
@@ -18,7 +18,7 @@
             $fechan=$_POST["fechan"];          //fecha de nacimiento
             $correo=$_POST["correo"];          //correo
             $genero=$_POST["genero"];          //correo
-
+  
             
           
             //realiza el proceso de modificacion de los datos del registro por los nuevos
@@ -42,4 +42,4 @@
             echo'<div class="alert alert-warning">Campos vacios</div>';
         }
     }
-    ?>
+?>

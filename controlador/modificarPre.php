@@ -9,15 +9,14 @@
         if(!empty($_POST["pregunta"]) and !empty($_POST["opcion1"]) and !empty($_POST["opcion2"]) and !empty($_POST["opcion3"])){
            
             //variables optenidas mediante el method post 
-            //del formulario de modificacionA.php 
-            //Datos del administrador 
+            //Datos de la pregunta 
             $id=$_POST["id"];                    
-            $nombre=$_POST["pregunta"];          //nombre  
-            $opcion1=$_POST["opcion1"];    //apellido paterno 
-            $opcion2=$_POST["opcion2"];    //apellido materno
-            $opcion3=$_POST["opcion3"];    //fecha de nacimiento
+            $nombre=$_POST["pregunta"];          //la pregunta  
+            $opcion1=$_POST["opcion1"];    //opcion visual
+            $opcion2=$_POST["opcion2"];    //opcion auditiva
+            $opcion3=$_POST["opcion3"];    //opcion kinestesica
         
-
+  
             
           
             //realiza el proceso de modificacion de los datos del registro por los nuevos

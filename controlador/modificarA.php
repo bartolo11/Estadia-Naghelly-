@@ -9,7 +9,7 @@
            
             //variables optenidas mediante el method post 
             //del formulario de modificacionA.php 
-            //Datos del administrador 
+            //Datos del Profesor 
             $id=$_POST["id"];                    
             $nombre=$_POST["nombre"];          //nombre  
             $apellidoP=$_POST["apellidoP"];    //apellido paterno 
@@ -17,7 +17,7 @@
             $fechan=$_POST["fechan"];          //fecha de nacimiento
             $correo=$_POST["correo"];          //correo
             $genero=$_POST["genero"];          //correo
-
+  
             
           
             //realiza el proceso de modificacion de los datos del registro por los nuevos
@@ -36,4 +36,4 @@
             echo'<div class="alert alert-warning">Campos vacios</div>';
         }
     }
-    ?>
+?>
