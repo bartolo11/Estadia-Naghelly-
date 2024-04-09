@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo usuario</title>
+    <link href='formulario.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <form action="" method="get" class="formulario">
+  
+        <p class="titulo_formulario">Nuevo usuario </p>
+        
+        <!-- Campos de información -->
+        
+        <input type="email" id="correo" placeholder="Correo" class="input_textual"/>
+        
+        <input type="password" id="contraseña" placeholder="Contraseña" class="input_textual"/>
+        
+        <input type="password" id="contraseña" placeholder="Confirmar contraseña" class="input_textual"/>
+        
+        <input type="text" id="nombre" placeholder="Nombre" class="input_textual"/>
+        
+        <input type="Apellido" id="apellido" placeholder="Apellido" class="input_textual"/>
+        
+        <div class="div_nacimiento">
+          
+          <span class="span_nacimiento">Fecha de nacimiento</span>
+          
+          <select class="input_textual dia_nacimiento" name="dia_nacimiento">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+          
+          <select class="input_textual mes_nacimiento" name="mes_nacimiento">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
+          
+          <select class="input_textual anio_nacimiento" name="anio_nacimiento">
+            <option value="1994">1994</option>
+            <option value="1995">1995</option>
+            <option value="1996">1996</option>
+            <option value="1997">1997</option>
+            <option value="1998">1998</option>
+            <option value="1999" selected>1999</option>
+            <option value="1999">2000</option>
+            <option value="1999">2001</option>
+          </select>
+          
+        </div>
+        
+        <select class="input_textual" name="genero">
+          <option value="" selected>Género</option>
+          <option value="mujer">Mujer</option>
+          <option value="hombre">Hombre</option>
+        </select>
+        
+        <select class="input_textual" name="pais">
+          <option value="" selected>País</option>
+          <option value="colombia">Colombia</option>
+          <option value="brasil">Brasil</option>
+          <option value="argentina">Argentina</option>
+          <option value="perú">Perú</option>
+        </select>
+        
+        <input type="ocupacion" id="ocupacion" placeholder="Ocupación" class="input_textual"/>
+        
+        <textarea class="input_textual" placeholder="Descripción" name="descripcion" id="descripcion" cols="30" rows="10"></textarea>
+        
+        <!-- Fin campos de información -->
+        
+        <!-- Imagen de perfil -->
+        
+        <div class="upload-image preview-img-upload">
+          <div class="preview-img-holder"><span class="remove-image fa fa-times"></span>
+            <div class="img-holder"><img class="preview-img" src="" alt="foto de perfil" title="foto de perfil"
+                                     draggable="false"/></div>
+          </div>
+          <label class="input-holder"><span class="icon fa fa-camera-retro"></span>
+            <input class="hide" type="file" accept="image/*"/>
+          </label>
+        </div>
+        
+        <!-- Fin imagen de perfil -->
+        
+        
+        <!--Botón para enviar -->
+        <button class="input_boton">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
+        <!-- Fin botón para enviar-->
+        
+        
+      </form>
+</body>
+</html>

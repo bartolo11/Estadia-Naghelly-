@@ -1,0 +1,145 @@
+body{
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  line-height: 1.2rem;
+  background-image: linear-gradient(to right, var(--blanco),var(--violeta));
+  font-family: 'Times New Roman', 'Times', 'serif';
+  
+}
+
+p{
+  margin-bottom: 1.4rem;
+  font-size: 1.2rem;
+  color: #000000;
+}
+
+.container{
+  width: 85%;
+  
+  margin: auto;
+  text-align: center;    
+  margin-top: 15px;
+}
+
+img{
+  max-width: 100%;
+  height: auto;
+}
+
+.header{
+  background-image: linear-gradient(to right,var(--naranja),var(--amarillo));
+  left: 0;
+  top: 0%;
+  width: 100%;
+  height: 130px;
+  color: #000000;
+}
+
+.header a{
+  
+  text-decoration: none;
+}
+
+.logo{
+  letter-spacing: 1px;
+  font-size: 2rem;
+}
+
+.logo img{
+  width: 110px;
+  height: auto;
+}
+
+
+
+.logo-nav-container{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  
+}
+
+.main{
+  padding-top: 1rem;
+}
+
+.footer{
+  background-image: linear-gradient(to right,var(--naranja),var(--amarillo));
+  padding: 1rem;
+  text-align: center;
+  margin-top: 0%;
+  color: #000000;
+}
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+:root{
+--naranja: #FF8D45;
+--naranjaclaro : #FFA775;
+--amarillo: #FFEA98;
+--rojo: #FF5252;
+--gris:#D3DDED; 
+--morado: #b460d5;
+--violeta: #cebbf5;
+--blanco: #ffffff;
+--rojon: #f12e2e;
+--amarittllo: #e6d8a4;
+}
+.login-page {
+width: 850px;
+margin: auto;
+}
+.login-page img{
+width: 250px;
+height: auto;
+}
+.form {
+position: relative;
+z-index: 1;
+background: var(--gris);
+max-width: 360px;
+margin: 0 auto 100px;
+padding: 1rem;
+text-align: center;
+box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+font-family: "Roboto", sans-serif;
+outline: 0;
+background: #ffffff;
+width: 100%;
+border: 0;
+margin: 0 0 15px;
+padding: 1rem;
+box-sizing: border-box;
+font-size: 14px;
+}
+.form button{
+font-family: "Roboto", sans-serif;
+text-transform: uppercase;
+outline: 0;
+background: var(--morado);
+width: 100%;
+border: 0;
+padding: 1rem;
+color: var(--gris);
+font-size: 18px;
+-webkit-transition: all 0.3 ease;
+transition: all 0.3 ease;
+cursor: pointer;
+}
+.form button:hover,.form button:active,.form button:focus {
+background: var(--blanco);
+color: var(--morado);
+}
+.form .message {
+margin: 15px 0 0;
+color: #b3b3b3;
+font-size: 12px;
+}
+.form .message a {
+color: #4CAF50;
+text-decoration: none;
+}
+.form .register-form {
+display: none;
+}

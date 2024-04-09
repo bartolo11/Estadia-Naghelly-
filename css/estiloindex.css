@@ -1,0 +1,197 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    }
+    
+    :root{
+        --naranja: #FF8D45;
+        --naranjaclaro : #FFA775;
+        --amarillo: #FFEA98;
+        --rojo: #FF5252;
+        --gris:#D3DDED; 
+        --morado: #b460d5;
+        --violeta: #cebbf5;
+        --blanco: #ffffff;
+        --rojon: #f12e2e;
+        --amarittllo: #e6d8a4;
+        }
+
+    body{
+        background-image: linear-gradient(to right,var(--morado),var(--violeta), var(--blanco),var(--violeta),var(--morado));
+        font-family: 'Times New Roman', 'Times', 'serif';
+    } 
+    
+    #wrapper{
+        width:  960px;
+        height: 900px;
+        background: var(--gris);
+        margin: 0 auto;
+    }
+    
+    .header{
+        height: 11rem;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        margin: 10px;
+        margin-top: 10px;
+        background-image: linear-gradient(to right,var(--naranja),var(--amarillo));
+        color:#000000;
+    }
+    
+   
+    .logo-nav-container{
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+        color:#000000;
+        
+      }
+    
+    h1,h2,h3,h4{
+        font-family: 'Times New Roman', 'Times', 'serif';
+        line-height: 1.2;
+    }
+    h1{
+        font-size: 4.2rem;
+    }
+    
+    h2{
+        font-size: 2rem;
+    }
+    
+    h3{
+        font-size: 3.2rem;
+    }
+    h4{
+       font-size: 1.8rem;
+    }
+    .barra{
+        padding-top: 0.5rem;
+    }
+    .logo{
+        color: #e5e5e5;
+        text-decoration: none;
+    }
+    .logo_nombre{
+        font-weight: 400;
+    }
+    .logo{
+        letter-spacing: 1px;
+        font-size: 2rem;
+      }
+      
+      .logo img{
+        width: 110px;
+        height: auto;
+      }
+    .logo_bold{
+        font-weight: 700;
+    }
+    .no-margin{
+        margin: 0;
+    }
+    .centrar-texto{
+        text-align: left;
+        padding: 1rem;
+    }
+    
+    @media(min-width:700px){
+    
+        .navegacion{
+            display: flex;
+            justify-content: space-between;
+            align-items: rigth;
+            padding-left: 10rem;
+    
+        }
+    }
+    
+    
+    .navegacion_enlace{
+        text-align: right;
+        font-size: 1rem;
+        color: #f8e007;
+        text-decoration: none;
+    }
+    
+    .menu{
+        width: 310px;
+        height: 550px;
+    }
+    
+    nav{
+        width: 300px;
+        height: relative;
+        background-color: rgb(223, 188, 240);
+        margin-left: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        float: left;
+    }
+    
+    .menu li{
+        font-size: 20px;
+        font-family: 'Times New Roman', 'Times', 'serif';
+        list-style: none;
+        padding: 10px;
+        margin: o auto;
+        cursor: pointer;
+        transition: all 300ms;
+    
+    
+    }
+    .menu li a{
+        text-decoration: none;
+    
+    
+    }
+    .menu li:hover{
+        background: linear-gradient(to right,var(--naranja),var(--amarillo));
+    }
+    
+    main{
+        width: 400px;
+        height: 500px;
+        background: var(--gris);
+        margin-left: 10px;
+        float: left;
+        margin-bottom: 10px;
+    }
+    
+   
+    #scroll img{
+        width: 400px;
+        height: auto;
+    }
+    
+    .barra::-webkit-scrollbar{
+        width: 7px;
+        background: rgb(161, 160, 161);
+    }
+    
+    aside{
+        width: 180px;
+        height: relative;
+        background: rgb(161, 160, 161);
+        float: right;
+        margin-right: 10px;
+    }
+    #datos{
+        float: left;
+        width: 920px;
+        height: 70px;
+        background-image: linear-gradient(to right,var(--naranja),var(--amarillo));
+        margin-top: 10px;
+        margin-left: 10px;
+        color: rgb(151, 48, 151);
+        padding: 0.5rem;
+    
+    }
+    
+    h4, h3{
+        margin-left: 15px;
+        font-family: 'Times New Roman', 'Times', 'serif';
+        color: #000000;
+        font-size: 20px;
+    }
