@@ -1,37 +1,51 @@
-<?php
+<?php 
   //Se genera la conexión con la base de datos
-  include "modelo/conexion.php";
+
 
   include "checarsessionE.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
+ 
+include "modelo/conexion.php";
+include "ver.php";
 
-  include "controlador/estadoMaterial.php";
+$idE = $_SESSION["idA"];
 
-  $idE = $_SESSION["idA"];
-
-   // Consulta para obtener la cantidad de estudiantes
-   $sql = "SELECT COUNT(*) as cantidad_notificaciones FROM notificaciones
-        WHERE idEst = $idE AND estado = 'sin revisar'";
+// Consulta para obtener la cantidad de estudiantes
+$sql = "SELECT COUNT(*) as cantidad_notificaciones FROM notificaciones
+     WHERE idEst = $idE AND estado = 'sin revisar'";
 $result = $conexion->query($sql);
 
-   
-   if ($result->num_rows > 0) {
-       // Devolver la cantidad de estudiantes como JSON
-       $row = $result->fetch_assoc();
-       $cantidad_notificaciones = $row['cantidad_notificaciones'];
-   } else {
-       $cantidad_notificaciones = 0;
-   }
- 
-   // Determina si hay notificaciones
-   $hay_notificaciones = $cantidad_notificaciones > 0;
 
-   $sql2 = "SELECT * FROM notificaciones
-   WHERE idEst = $idE AND estado = 'sin revisar'";
+if ($result->num_rows > 0) {
+    // Devolver la cantidad de estudiantes como JSON
+    $row = $result->fetch_assoc();
+    $cantidad_notificaciones = $row['cantidad_notificaciones'];
+} else {
+    $cantidad_notificaciones = 0;
+}
+
+// Determina si hay notificaciones
+$hay_notificaciones = $cantidad_notificaciones > 0;
+
+$sql2 = "SELECT * FROM notificaciones
+WHERE idEst = $idE AND estado = 'sin revisar'";
 $result2 = $conexion->query($sql2);
 
+// ID del usuario específico
 
+$idUsuarioEspecifico= $_SESSION["idA"];  // Aquí debes poner el ID del usuario específico
+ 
+// Consulta SQL para contar las ocurrencias de cada categoría para el usuario específico
+$sqlG = "SELECT categoria, COUNT(*) as conteo FROM rtest WHERE idUsuario = $idUsuarioEspecifico GROUP BY categoria";
+
+$resultG = $conexion->query($sqlG);
+
+// Array para almacenar las categorías y sus conteos
+$categorias = [];
+$conteos = [];
+
+// Procesar los resultados de la consulta
 
 ?>
 
@@ -40,10 +54,11 @@ $result2 = $conexion->query($sql2);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administrador</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <link href='css/nav.css' rel='stylesheet' type='text/css'>
-    <link href='css/formulario.css' rel='stylesheet' type='text/css'>
+  <link href='css/formulario.css' rel='stylesheet' type='text/css'>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   
@@ -67,7 +82,7 @@ $result2 = $conexion->query($sql2);
             <a href="MaterialEstCom.php">Material recomendado<a></li>
              <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
             <path d="M0 96C0 43 43 0 96 0h96V190.7c0 13.4 15.5 20.9 26 12.5L272 160l54 43.2c10.5 8.4 26 .9 26-12.5V0h32 32c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32H384 96c-53 0-96-43-96-96V96zM64 416c0 17.7 14.3 32 32 32H352V384H96c-17.7 0-32 14.3-32 32z"/>
-          </svg> <a href="MaterialEst.php"> Material<a> </li>
+          </svg> <a href="MaterialEst.php">  Material<a> </li>
           <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="20" viewBox="0 0 640 512">
             <path d="M0 24C0 10.7 10.7 0 24 0H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24C10.7 48 0 37.3 0 24zM0 488c0-13.3 10.7-24 24-24H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24zM83.2 160a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM32 320c0-35.3 28.7-64 64-64h96c12.2 0 23.7 3.4 33.4 9.4c-37.2 15.1-65.6 47.2-75.8 86.6H64c-17.7 0-32-14.3-32-32zm461.6 32c-10.3-40.1-39.6-72.6-77.7-87.4c9.4-5.5 20.4-8.6 32.1-8.6h96c35.3 0 64 28.7 64 64c0 17.7-14.3 32-32 32H493.6zM391.2 290.4c32.1 7.4 58.1 30.9 68.9 61.6c3.5 10 5.5 20.8 5.5 32c0 17.7-14.3 32-32 32h-224c-17.7 0-32-14.3-32-32c0-11.2 1.9-22 5.5-32c10.5-29.7 35.3-52.8 66.1-60.9c7.8-2.1 16-3.1 24.5-3.1h96c7.4 0 14.7 .8 21.6 2.4zm44-130.4a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM321.6 96a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/>
           </svg><a href="respuestas.php"> Test<a></li>
@@ -140,98 +155,103 @@ $result2 = $conexion->query($sql2);
         </ul>
       </div>
     </div>
-    <div class="view col-12 p-3 ">
-      <!--img src="vistaA.jpeg"-->
-      <div class="container-fluid row">
-        <!--El formulario envía datos por medio del method post -->
-        <div class="col-12 p-3">
-        <form action="" method="get" class="col-10 p-3 m-auto formulario">
-           <h3>Material</h3>
-           <hr    color="#000000";>
-        </form>
-        
-        <?php
-include "modelo/conexion.php";
-
-// Verificar si se ha enviado un filtro por materia
-if (isset($_GET['materia'])) {
-    $filtro_materia = $_GET['materia'];
-    $query = "SELECT * FROM material_didactico WHERE materia_asosiada = '$filtro_materia' ORDER BY fechaPublicacion ASC";
+    <div class=" col-10 p-3 view" >
+    <?php if ($resultG->num_rows > 0) {
+    while($row = $resultG->fetch_assoc()) {
+        $categorias[] = $row["categoria"];
+        $conteos[] = $row["conteo"];
+    }
 } else {
-    $query = "SELECT * FROM material_didactico ORDER BY fechaPublicacion ASC"; //order by fecha_publicacion desc
+    echo "No existen registro de sus respuestas.<br>";
 }
+// Consulta SQL para obtener la categoría de la tabla_categoria
+$sqlCategoria = "SELECT categoria FROM tabla_categorias WHERE idUsuario = $idUsuarioEspecifico";
+$resultCategoria = $conexion->query($sqlCategoria);
+$categoriaMensaje = "";
 
-$resultado = mysqli_query($conexion, $query);
-?>
-
-<form method="GET" action="" class="col-10 p-3 m-auto formulario">
-    <div class="mb-3">
-        <label for="materia" class="input_textual"><h4>Filtrar por Materia:</h4></label>
-        <select class="form-control" id="materia" name="materia" required>
-            <option value="">Selecciona una materia</option>
-            <option value="Habilidades Gerenciales">Habilidades Gerenciales</option>
-            <option value="Matemáticas para Ingeniería II">Matemáticas para Ingeniería II</option>
-            <option value="Sistemas Operativos">Sistemas Operativos</option>
-            <option value="Programación Orientada a Objetos">Programación Orientada a Objetos</option>
-            <option value="Interconexión de Redes">Interconexión de Redes</option>
-            <option value="Administración de Base de Datos">Administración de Base de Datos</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Filtrar</button>
-    <a href="?clear=true" class="btn btn-secondary">Limpiar Filtro</a>
-</form>
-
-<table class="table">
-<thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
-<tr>
-    <th scope="col">Id </th>
-    <th scope="col">Materia Asociada</th>
-    <th scope="col">Nombre del Archivo</th>
-    <th scope="col">Tipo de Archivo</th>
-    <th scope="col">Descripción</th>
-    <th scope="col">Fecha de Publicación</th>
-    <th scope="col">Descargar</th>
-    <th scope="col">Categoria</th>
+if ($resultCategoria->num_rows > 0) {
+    $rowCategoria = $resultCategoria->fetch_assoc();
+    $categoriaMensaje = "La categoría del estudiante es: " . $rowCategoria["categoria"];
+    $nn = $rowCategoria["categoria"];
     
-</tr>
-</thead>
-<tbody class="table table table-striped table-hover table-bordered border-primary">
-<?php
-while ($fila = mysqli_fetch_assoc($resultado)) {
-  $nombre = $fila['idMaterial'];
-    echo '<tr>';
-    echo '<td>' . $fila['idMaterial'] . '</td>';
-    echo '<td>' . $fila['materia_asosiada'] . '</td>';
-    echo '<td>' . $fila['titulo'] . '</td>';
-    echo '<td>' . $fila['tipo'] . '</td>'; // Tipo de archivo
-    echo '<td>' . $fila['descripción'] . '</td>'; // Descripción
-    echo '<td>' . $fila['fechaPublicacion'] . '</td>'; // Fecha de Publicación
-    $ruta_archivo = 'material/' . $fila['titulo'];
-    echo '<td><a href="' . $ruta_archivo . '" download>Descargar</a></td>';
-    echo '<td>' . $fila['categoria'] . '</td>';
-    ?>
-      
-    <?php
-    echo '</tr>';
+    $query2 = "SELECT * FROM notificaciones WHERE nombre = '$nn' and idEst = $idE ";
+$resultado2 = mysqli_query($conexion, $query2);
+while ($fila2 = mysqli_fetch_assoc($resultado2)) {
+  
+  $idNotificacion=$fila2['idNotificaciones'];
+
 }
-?>
-</tbody>
-</table>
-      </div>
+
+    echo "$categoriaMensaje ";
+} else {
+    $categoriaMensaje = "No se encontró ninguna categoría asociada al estudiante.";
+    echo "$categoriaMensaje";
+}
+
+// Colores de las barras (puedes ajustar estos colores según tus preferencias)
+$colores = [
+    'rgba(255, 99, 132, 0.5)',
+    'rgba(54, 162, 235, 0.5)',
+    'rgba(255, 206, 86, 0.5)',
+    'rgba(75, 192, 192, 0.5)',
+    'rgba(153, 102, 255, 0.5)',
+    'rgba(255, 159, 64, 0.5)'
+];
+
+// Cerrar conexión
+$conexion->close();?>
+    <div style="width: 600px; height: 600px;">
+        <canvas id="graficoCategorias"></canvas>
+
+   
+
+        <form  class=" col-10 p-3 formulario" method="POST"  >
+          <h4>Marcar como revisado</h4>
+          <hr    color="#000000";>
+          <a href="resultadoVistaEstudiante.php?id=<?= $idNotificacion ?>" class="btn btn-small btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+          </a>
+        </form>
+    </div>        
     </div>
-    </div>
+      <!-- Contenedor del gráfico -->
+    
   </div>
 </div>
 <script>
-  // Función para validar la contraseña
-  function eliminar()
-      {
-        var respuesta = confirm("estas seguro que deseas eliminar");
-          return respuesta;
-      }
+        // Datos para el gráfico
+        var categorias = <?php echo json_encode($categorias); ?>;
+        var conteos = <?php echo json_encode($conteos); ?>;
+        var colores = <?php echo json_encode($colores); ?>;
+
+        // Configuración del gráfico
+        var config = {
+            type: 'bar',
+            data: {
+                labels: categorias,
+                datasets: [{
+                    label: 'Número de ocurrencias',
+                    data: conteos,
+                    backgroundColor: colores, // Usar los colores definidos
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Crear el gráfico
+        var ctx = document.getElementById('graficoCategorias').getContext('2d');
+        var myChart = new Chart(ctx, config);
     </script>
-    <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
+<script>
 </body>
 </html>

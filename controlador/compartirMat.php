@@ -2,7 +2,7 @@
 if (!empty($_POST["btnregistrar"])) {
     if (isset($_POST['idE']) && !empty($_POST['idE'])) {
         $id = $_POST['id'];
-        $estado = "sin revisar";
+        
         
         foreach ($_POST['idE'] as $idEstudiante) {
             // Verificar si ya existe un registro para el mismo estudiante y material
@@ -19,7 +19,7 @@ if (!empty($_POST["btnregistrar"])) {
                 $estilo = $datos->categoria;
                 $materiaA = $datos->materia_asosiada;
 
-                $sql2 = $conexion->query("INSERT INTO asignar_material (nombreM, descripciónM, estiloAprendizaje, idMaterial, idEst, estado, materiaA) VALUES ('$nombre', '$descripcion', '$estilo', '$id', '$idEstudiante', '$estado', '$materiaA')");
+                $sql2 = $conexion->query("INSERT INTO asignar_material (nombreM, descripciónM, estiloAprendizaje, idMaterial, idEst, materiaA) VALUES ('$nombre', '$descripcion', '$estilo', '$id', '$idEstudiante', '$materiaA')");
 
                 if ($sql2) {
                     // Registro exitoso

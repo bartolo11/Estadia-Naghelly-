@@ -11,11 +11,8 @@
   $idE = $_SESSION["idA"];
 
    // Consulta para obtener la cantidad de estudiantes
-   $sql = "SELECT COUNT(*) as cantidad_notificaciones FROM notificaciones n
-        WHERE idEst = $idE AND EXISTS (
-            SELECT 1 FROM asignar_material am 
-            WHERE am.idEst = n.idEst AND am.estado = 'sin revisar'
-        )";
+   $sql = "SELECT COUNT(*) as cantidad_notificaciones FROM notificaciones
+        WHERE idEst = $idE AND estado = 'sin revisar'";
 $result = $conexion->query($sql);
 
    
@@ -30,9 +27,8 @@ $result = $conexion->query($sql);
    // Determina si hay notificaciones
    $hay_notificaciones = $cantidad_notificaciones > 0;
 
-   $sql2 = "SELECT * FROM notificaciones n
-   INNER JOIN asignar_material am ON n.idEst = am.idEst
-   WHERE n.idEst = $idE AND am.estado = 'sin revisar'";
+   $sql2 = "SELECT * FROM notificaciones
+   WHERE idEst = $idE AND estado = 'sin revisar'";
 $result2 = $conexion->query($sql2);
 
 
@@ -75,6 +71,10 @@ $result2 = $conexion->query($sql2);
           <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="20" viewBox="0 0 640 512">
             <path d="M0 24C0 10.7 10.7 0 24 0H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24C10.7 48 0 37.3 0 24zM0 488c0-13.3 10.7-24 24-24H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24zM83.2 160a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM32 320c0-35.3 28.7-64 64-64h96c12.2 0 23.7 3.4 33.4 9.4c-37.2 15.1-65.6 47.2-75.8 86.6H64c-17.7 0-32-14.3-32-32zm461.6 32c-10.3-40.1-39.6-72.6-77.7-87.4c9.4-5.5 20.4-8.6 32.1-8.6h96c35.3 0 64 28.7 64 64c0 17.7-14.3 32-32 32H493.6zM391.2 290.4c32.1 7.4 58.1 30.9 68.9 61.6c3.5 10 5.5 20.8 5.5 32c0 17.7-14.3 32-32 32h-224c-17.7 0-32-14.3-32-32c0-11.2 1.9-22 5.5-32c10.5-29.7 35.3-52.8 66.1-60.9c7.8-2.1 16-3.1 24.5-3.1h96c7.4 0 14.7 .8 21.6 2.4zm44-130.4a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM321.6 96a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/>
           </svg><a href="respuestas.php"> Test<a></li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="20" viewBox="0 0 640 512">
+            <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm64 192c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm64-64c0-17.7 14.3-32 32-32s32 14.3 32 32V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V160zM320 288c17.7 0 32 14.3 32 32v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V320c0-17.7 14.3-32 32-32z"/>
+        </svg><a href="resultadoVistaEstudiante.php"> Mi estilo<a>
+             </li>
        
           <li>
             
@@ -188,5 +188,7 @@ $result2 = $conexion->query($sql2);
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
 </body>
 </html>

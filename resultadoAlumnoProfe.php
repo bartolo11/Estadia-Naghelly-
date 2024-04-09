@@ -145,7 +145,7 @@ $colores = [
 
 // Cerrar conexión
 $conexion->close();?>
-    <div style="width: 400px; height: 400px;">
+    <div style="width: 600px; height: 600px;">
         <canvas id="graficoCategorias"></canvas>
 
         <form action="estudiantesGraficasProfe.php" method="get">
