@@ -4,9 +4,6 @@
   include "checarsessionA.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
-  
-  include "controlador/eliminarPre.php";
-
   ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,16 +12,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  
     <link href='css/nav.css' rel='stylesheet' type='text/css'>
     <link href='css/formulario.css' rel='stylesheet' type='text/css'>
-    
 </head>
 <body>
   
 <div class="page">
   <div class="pageHeader">
     <div class="title">Sistema web identificación de estilos de aprendizaje</div>
-    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i></svg>
+    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i>
           <?php   echo  $_SESSION["nombre"];
             ?></span></div>
   </div>
@@ -97,7 +94,7 @@
             <path d="M17 18h2" />
             <path d="M20 15h-3v6" />
             <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
-          </svg><a href="formularioReporteA.php">Reporte<a></li>
+          </svg> <a href="formularioReporteA.php">Reporte<a></li>
           <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-database-export" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3" />
@@ -130,110 +127,43 @@
         </ul>
       </div>
     </div>
-    <div class="view col-12 p-3 ">
-      <!--img src="vistaA.jpeg"-->
+    <div class="view">
+      
       <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-        <div class="col-12 p-3">
-        <form action="" method="get" class="col-10 p-3 m-auto formulario">
-           <h3>Gestion Test</h3>
-           <hr    color="#000000";>
-        </form>
-        
-        <?php
+        <form  class=" col-10 p-3 formulario" method="POST"  >
+          <h3>Registro de Novedades</h3>
+          <hr    color="#000000";>
+
+          <?php
           include "modelo/conexion.php";
-          $sql = $conexion->query("SELECT * FROM pregunta");
+          include "controlador/registroN.php";
+          ?>
+          <!--Se genera la llamada a la función registroA.php la cual genera el registro de Administradores por medio
+            del botón registrar del formulario. 
+            Así como a la función conexion.php la cual contiene el código para la conexión a la base de datos
+            -->
         
-        ?>
-<!--Se genera el diseño de una tabla para organizar la información-->
-        <table class="table">
-        <thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">descripción</th>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="input_textual">Titulo</label>
+            
+            <input type="text" class="form-control" name="titulo" required>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="input_textual">Descripción</label>
+            
+            <input type="text" class="form-control" name="des" required>
+          </div>
+          
+          
 
-        <!-- Títulos de opciones -->
-        <th scope="col">Opción visual</th>
-        <th scope="col">Opción auditiva</th>
-        <th scope="col">Opción kinestesica</th>
-
-        <!-- ... (otros títulos) ... -->
-
-        <th scope="col"></th>
-    </tr>
-</thead>
-          <tbody class="table table table-striped table-hover table-bordered border-primary">
-            <!--Genera la llamada a la función conexión y genera una consulta a la base de datos de los registros 
-              y por medio de un ciclo obtiene los datos de los registros y los asigna a una variable para imprimirlos en pantalla 
-              -->
-            <?php
-              //include "modelo/conexion.php";
-              
-              while($datos=$sql->fetch_object()){
-                $idPregunta = $datos->idpreguntas;
-                $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $idPregunta");
-              ?>
-            <tr>
-              <td><?= $datos->idpreguntas ?></td>
-              <td><?= $datos->descripción_p ?></td>
-              
-               <?php
-                while ($opciones = $sqlOpciones->fetch_object()) {
-                echo '<td>' . $opciones->descripción_op . '</td>';
-                }
-               ?>
-               <td>
-                <!--Se crea un enlace por medio del cual se llama la función modificacionA.php
-                  el cual es un icono de color amarillo que indica la modificación  
-                  para llevar a cabo el llenado nuevo de los datos del registro el cual obtiene
-                  la información por medio de un dato de control de arrastre que es el id 
-                  -->
-                <a href="modificacionPre.php?id=<?= $datos->idpreguntas ?>" class="btn btn-small btn-warning">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" />
-                    <path d="M16 5l3 3" />
-                    <path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" />
-                  </svg>
-                </a>
-                <!--Se crea un enlace por medio del cual se llama a sí misma 
-                  la pagina para llevar a cabo la eliminación del registro además de
-                  que llama la funcion Script con el onclick para llevar a 
-                  cabo la función de eliminación 
-                  -->
-                <a onclick="return eliminar()" href="gestionPreguntas.php?id=<?= $datos->idpreguntas ?>"  class="btn btn-small btn-danger" >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <line x1="4" y1="7" x2="20" y2="7" />
-                    <line x1="10" y1="11" x2="10" y2="17" />
-                    <line x1="14" y1="11" x2="14" y2="17" />
-                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                  </svg>
-                </a>
-              </td>
-             
-             
-            </tr>
-            <?php }
-              ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
+          <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">Registrar</button>
+        </form>    
     </div>
   </div>
 </div>
 <script>
-  // Función para validar la contraseña
-  function eliminar()
-      {
-        var respuesta = confirm("estas seguro que deseas eliminar");
-          return respuesta;
-      }
-    </script>
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
+</script>
 </body>
 </html>

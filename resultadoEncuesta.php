@@ -1,39 +1,51 @@
 <?php 
   //Se genera la conexión con la base de datos
-  include "modelo/conexion.php";
+
+
   include "checarsessionA.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
-  
-  include "controlador/eliminarPre.php";
+ 
+include "modelo/conexion.php";
 
-  ?>
+$idPreguntaEspecifica = $_GET["id"]; // Aquí debes poner el ID de la pregunta específica
+
+// Consulta SQL para contar las ocurrencias de cada nivelS para la pregunta específica y el usuario específico
+$sql = "SELECT nivelS, COUNT(*) as conteo FROM respuesta WHERE idPregunta = $idPreguntaEspecifica GROUP BY nivelS";
+
+$result = $conexion->query($sql);
+
+// Array para almacenar los niveles y sus conteos
+$niveles = [];
+$conteos = [];
+
+// Procesar los resultados de la consulta
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administrador</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link href='css/nav.css' rel='stylesheet' type='text/css'>
-    <link href='css/formulario.css' rel='stylesheet' type='text/css'>
-    
+  <link href='css/nav.css' rel='stylesheet' type='text/css'>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   
 <div class="page">
   <div class="pageHeader">
     <div class="title">Sistema web identificación de estilos de aprendizaje</div>
-    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i></svg>
-          <?php   echo  $_SESSION["nombre"];
+    <div class="userPanel"><span class="username"><?php   echo  $_SESSION["nombre"];
             ?></span></div>
   </div>
   <div class="main">
     <div class="nav">
-      
       <div class="menu">
-      <div class="title"><center>Menu</center></div>
-      <ul>
+        <div class="title"><center>Menu</center></div>
+        <ul>
           <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
             <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
           </svg><a href="controlador/loginrol.php"> Inicio<a></li>
@@ -97,7 +109,7 @@
             <path d="M17 18h2" />
             <path d="M20 15h-3v6" />
             <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
-          </svg><a href="formularioReporteA.php">Reporte<a></li>
+          </svg><a href="controlador/Reporte.php">Reporte<a></li>
           <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-database-export" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3" />
@@ -130,110 +142,72 @@
         </ul>
       </div>
     </div>
-    <div class="view col-12 p-3 ">
-      <!--img src="vistaA.jpeg"-->
-      <div class="container-fluid row">
-        <!--El formulario envía datos por medio del method post -->
-        <div class="col-12 p-3">
-        <form action="" method="get" class="col-10 p-3 m-auto formulario">
-           <h3>Gestion Test</h3>
-           <hr    color="#000000";>
-        </form>
-        
-        <?php
-          include "modelo/conexion.php";
-          $sql = $conexion->query("SELECT * FROM pregunta");
-        
-        ?>
-<!--Se genera el diseño de una tabla para organizar la información-->
-        <table class="table">
-        <thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">descripción</th>
+    <div class=" col-10 p-3 view" >
+    <?php 
+      if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $niveles[] = $row["nivelS"];
+            $conteos[] = $row["conteo"];
+        }
+        } else {
+            echo "No se encontraron resultados.";
+        }
 
-        <!-- Títulos de opciones -->
-        <th scope="col">Opción visual</th>
-        <th scope="col">Opción auditiva</th>
-        <th scope="col">Opción kinestesica</th>
+      // Colores de las barras (puedes ajustar estos colores según tus preferencias)
+      $colores = [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ];
 
-        <!-- ... (otros títulos) ... -->
+      // Cerrar conexión
+      $conexion->close();
+    ?>
+    <div style="width: 500px; height: 500px;">
+        <canvas id="graficoNiveles"></canvas>
+        <br>
 
-        <th scope="col"></th>
-    </tr>
-</thead>
-          <tbody class="table table table-striped table-hover table-bordered border-primary">
-            <!--Genera la llamada a la función conexión y genera una consulta a la base de datos de los registros 
-              y por medio de un ciclo obtiene los datos de los registros y los asigna a una variable para imprimirlos en pantalla 
-              -->
-            <?php
-              //include "modelo/conexion.php";
-              
-              while($datos=$sql->fetch_object()){
-                $idPregunta = $datos->idpreguntas;
-                $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $idPregunta");
-              ?>
-            <tr>
-              <td><?= $datos->idpreguntas ?></td>
-              <td><?= $datos->descripción_p ?></td>
-              
-               <?php
-                while ($opciones = $sqlOpciones->fetch_object()) {
-                echo '<td>' . $opciones->descripción_op . '</td>';
-                }
-               ?>
-               <td>
-                <!--Se crea un enlace por medio del cual se llama la función modificacionA.php
-                  el cual es un icono de color amarillo que indica la modificación  
-                  para llevar a cabo el llenado nuevo de los datos del registro el cual obtiene
-                  la información por medio de un dato de control de arrastre que es el id 
-                  -->
-                <a href="modificacionPre.php?id=<?= $datos->idpreguntas ?>" class="btn btn-small btn-warning">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" />
-                    <path d="M16 5l3 3" />
-                    <path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" />
-                  </svg>
-                </a>
-                <!--Se crea un enlace por medio del cual se llama a sí misma 
-                  la pagina para llevar a cabo la eliminación del registro además de
-                  que llama la funcion Script con el onclick para llevar a 
-                  cabo la función de eliminación 
-                  -->
-                <a onclick="return eliminar()" href="gestionPreguntas.php?id=<?= $datos->idpreguntas ?>"  class="btn btn-small btn-danger" >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <line x1="4" y1="7" x2="20" y2="7" />
-                    <line x1="10" y1="11" x2="10" y2="17" />
-                    <line x1="14" y1="11" x2="14" y2="17" />
-                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                  </svg>
-                </a>
-              </td>
-             
-             
-            </tr>
-            <?php }
-              ?>
-          </tbody>
-        </table>
-      </div>
+       
+    </div>  
+    <form action="gestionEncuestaA.php" method="get">
+          <button type="submit" class="btn btn-outline-primary">Volver a la vista anterior</button>
+        </form>      
     </div>
-    </div>
+      <!-- Contenedor del gráfico -->
+    
   </div>
 </div>
 <script>
-  // Función para validar la contraseña
-  function eliminar()
-      {
-        var respuesta = confirm("estas seguro que deseas eliminar");
-          return respuesta;
-      }
-    </script>
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        // Datos para el gráfico
+        var niveles = <?php echo json_encode($niveles); ?>;
+        var conteos = <?php echo json_encode($conteos); ?>;
+        var colores = <?php echo json_encode($colores); ?>;
 
+        // Configuración del gráfico
+        var config = {
+            type: 'pie', // Cambiar el tipo de gráfico a pie
+            data: {
+                labels: niveles,
+                datasets: [{
+                    label: 'Número de ocurrencias',
+                    data: conteos,
+                    backgroundColor: colores, // Usar los colores definidos
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        };
+
+        // Crear el gráfico
+        var ctx = document.getElementById('graficoNiveles').getContext('2d');
+        var myChart = new Chart(ctx, config);
+    </script>
 </body>
 </html>

@@ -1,39 +1,33 @@
 <?php 
   //Se genera la conexión con la base de datos
   include "modelo/conexion.php";
+
   include "checarsessionA.php";
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
-  
-  include "controlador/eliminarPre.php";
-
   ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administrador</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link href='css/nav.css' rel='stylesheet' type='text/css'>
-    <link href='css/formulario.css' rel='stylesheet' type='text/css'>
-    
+  <link href='css/nav.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
   
 <div class="page">
   <div class="pageHeader">
     <div class="title">Sistema web identificación de estilos de aprendizaje</div>
-    <div class="userPanel"><span class="username" style="color:#000000";><i class="fa-solid fa-user-large"></i></svg>
-          <?php   echo  $_SESSION["nombre"];
+    <div class="userPanel"><span class="username"><?php   echo  $_SESSION["nombre"];
             ?></span></div>
   </div>
   <div class="main">
     <div class="nav">
-      
       <div class="menu">
-      <div class="title"><center>Menu</center></div>
-      <ul>
+        <div class="title"><center>Menu</center></div>
+        <ul>
           <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
             <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
           </svg><a href="controlador/loginrol.php"> Inicio<a></li>
@@ -49,7 +43,7 @@
           <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
             <path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/></svg>  
             <a href="estudiantesGraficas.php">Resultados por estudiante<a></li>
-            <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M13 5h8" />
             <path d="M13 9h5" />
@@ -97,7 +91,7 @@
             <path d="M17 18h2" />
             <path d="M20 15h-3v6" />
             <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
-          </svg><a href="formularioReporteA.php">Reporte<a></li>
+          </svg><a href="controlador/Reporte.php">Reporte<a></li>
           <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-database-export" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
             <path d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3" />
@@ -130,110 +124,81 @@
         </ul>
       </div>
     </div>
-    <div class="view col-12 p-3 ">
-      <!--img src="vistaA.jpeg"-->
-      <div class="container-fluid row">
+
+
+    <div class="view" >
+
+    <div class="container-fluid row">
         <!--El formulario envía datos por medio del method post -->
-        <div class="col-12 p-3">
-        <form action="" method="get" class="col-10 p-3 m-auto formulario">
-           <h3>Gestion Test</h3>
-           <hr    color="#000000";>
-        </form>
-        
-        <?php
+        <form  class=" col-10 p-3 formulario" method="POST"  >
+          <h3>Generar reporte</h3>
+          <hr    color="#000000";>
+
+          <?php
           include "modelo/conexion.php";
-          $sql = $conexion->query("SELECT * FROM pregunta");
-        
-        ?>
-<!--Se genera el diseño de una tabla para organizar la información-->
-        <table class="table">
-        <thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">descripción</th>
+          /*include "controlador/reporte.php";*/
+          ?>
+                  
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="input_textual">Deseas generar un reporte de:</label>
+            <!--Genera el espacio para introducir la Cedula del administrador y envía 
+              el dato cedula por medio del method post del formulario -->
+              <select class="form-control"  id="opcion" name="opcion" onchange="toggleInfo()" required>
+            <option disabled selected>selecciona una opción</option>
+            <option value="Alum">Alumno</option>
+            <option value="Material">Material didáctico</option>
+            <option value="Encuesta">Resultados Generales de la encuesta de satisfacción</option>
+          </select>
+          </div>
+            <!-- Opciones para reporte de Estudiante -->
+            <div id="opcionesEstudiante" class="mb-3" style="display: none;">
+                <label for="exampleInputEmail1">Información sobre alumnos:</label>
+                <select class="form-control" name="opcionEstudiante" id="opcionEstudiante">
+                    <option disabled selected>Selecciona una opción</option>
+                    <option value="Estilo">Cantidad por estilo de aprendizaje</option>
+                    <option value="CantidaGrupo">Cantidad de alumnos por grupo</option>
+                    <option value="CantidadGenero">Cantidad de alumnos por genero</option>
+                </select>
+            </div>
 
-        <!-- Títulos de opciones -->
-        <th scope="col">Opción visual</th>
-        <th scope="col">Opción auditiva</th>
-        <th scope="col">Opción kinestesica</th>
+                <!-- Div adicional para el material -->
+          <div id="opcionesMaterial" class="mb-3" style="display: none;">
+          <label for="exampleInputEmail1" class="input_textual">Información del material:</label>
+          <select class="form-control" id="op" name="op"  required>
+            <option disabled selected>Selecciona una opción</option>
+            <option value="Estilo">Cabtidad de material por estilo de aprendizaje</option>
+            <option value="Materia">Cantidad de material por materia</option>
+          </select>
 
-        <!-- ... (otros títulos) ... -->
+          <br>
+          <!-- Div adicional para el rango de fechas -->
+          <div id="rangoFechasMaterial" class="mb-3" style="display: none;">
+            <label for="fechaInicioMaterial">Fecha de inicio:</label>
+            <input type="date" id="fechaInicioMaterial" name="fechaInicioMaterial">
+            <label for="fechaFinMaterial">Fecha de fin:</label>
+            <input type="date" id="fechaFinMaterial" name="fechaFinMaterial">
+          </div>
 
-        <th scope="col"></th>
-    </tr>
-</thead>
-          <tbody class="table table table-striped table-hover table-bordered border-primary">
-            <!--Genera la llamada a la función conexión y genera una consulta a la base de datos de los registros 
-              y por medio de un ciclo obtiene los datos de los registros y los asigna a una variable para imprimirlos en pantalla 
-              -->
-            <?php
-              //include "modelo/conexion.php";
-              
-              while($datos=$sql->fetch_object()){
-                $idPregunta = $datos->idpreguntas;
-                $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $idPregunta");
-              ?>
-            <tr>
-              <td><?= $datos->idpreguntas ?></td>
-              <td><?= $datos->descripción_p ?></td>
-              
-               <?php
-                while ($opciones = $sqlOpciones->fetch_object()) {
-                echo '<td>' . $opciones->descripción_op . '</td>';
-                }
-               ?>
-               <td>
-                <!--Se crea un enlace por medio del cual se llama la función modificacionA.php
-                  el cual es un icono de color amarillo que indica la modificación  
-                  para llevar a cabo el llenado nuevo de los datos del registro el cual obtiene
-                  la información por medio de un dato de control de arrastre que es el id 
-                  -->
-                <a href="modificacionPre.php?id=<?= $datos->idpreguntas ?>" class="btn btn-small btn-warning">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" />
-                    <path d="M16 5l3 3" />
-                    <path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" />
-                  </svg>
-                </a>
-                <!--Se crea un enlace por medio del cual se llama a sí misma 
-                  la pagina para llevar a cabo la eliminación del registro además de
-                  que llama la funcion Script con el onclick para llevar a 
-                  cabo la función de eliminación 
-                  -->
-                <a onclick="return eliminar()" href="gestionPreguntas.php?id=<?= $datos->idpreguntas ?>"  class="btn btn-small btn-danger" >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <line x1="4" y1="7" x2="20" y2="7" />
-                    <line x1="10" y1="11" x2="10" y2="17" />
-                    <line x1="14" y1="11" x2="14" y2="17" />
-                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                  </svg>
-                </a>
-              </td>
-             
-             
-            </tr>
-            <?php }
-              ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    </div>
+    </div>        
+    <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">Generar PDF</button>
+        </form>    
+    </div>  
   </div>
 </div>
 <script>
-  // Función para validar la contraseña
-  function eliminar()
-      {
-        var respuesta = confirm("estas seguro que deseas eliminar");
-          return respuesta;
-      }
-    </script>
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        function toggleInfo() {
+          var opcion = document.getElementById("opcion").value;
+          var opcionesEstudiante = document.getElementById("opcionesEstudiante");
+          var opcionesMaterial = document.getElementById("opcionesMaterial");
+          var rangoFechasMaterial = document.getElementById("rangoFechasMaterial");
 
+          opcionesEstudiante.style.display = opcion === "Alum" ? "block" : "none";
+        // Si la opción seleccionada es "Material", muestra el campo opcionesMaterial, de lo contrario, ocúltalo
+          opcionesMaterial.style.display = opcion === "Material" ? "block" : "none";
+
+          rangoFechasMaterial.style.display = opcion === "Material" ? "block" : "none";
+
+        }
+    </script>  
 </body>
 </html>

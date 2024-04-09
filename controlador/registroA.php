@@ -21,7 +21,7 @@ if(!empty($_POST["btnregistrar"])){
               $fechan=$_POST["fechan"];          //fecha de nacimiento
               $genero=$_POST["genero"];          //genero
               $correo=$_POST["correo"];          //cedula
-              $contraseña=$_POST["contraseña"];  //contraseña
+              $contraseña=md5($_POST["contraseña"]);  //contraseña
               $tipo=$_POST["tipo"];
         if($tipo=="Profesor"){
         //condiciona el proceso de registro para 

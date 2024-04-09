@@ -8,7 +8,7 @@
   $nivelE="Estudiante";
 
   $usuario=$_POST['usuario'];   //valor de la cedula trasferido por el methgod post dese el index
-  $clave=$_POST['clave'];       //valor de la contraseña trasferido por el methgod post dese el index
+  $clave=md5($_POST['clave']);       //valor de la contraseña trasferido por el methgod post dese el index
   
   //genera la conexion con la base de datos
   $conexion=mysqli_connect("localhost","root","","estadia");

@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>recuperacion de contraseña</title>
     <link href='css/stile.css' rel='stylesheet' type='text/css'>
 </head>
-<body>
+<body> 
     <div class="page">
         <div class="container">
           <div class="left">
-            <div class="login"><h3>Sistema web para la identificacción de estilos de aprendizaje</h3>
-                <br><br><center>!Bienvenido¡</center>
+            <div class="login">
+                <h2>Recuperación de contraseña</h2>
+                
             </div>
           </div>
           <div class="right">
           
               <div class="login-page">
                 <div class="form">
-                  
-                  <h4 >Inicio de sesión</h4>
+                 
+                  <h3>Ingrese su correo electrónico para restablecer contraseña</h3>
+                  <br>
                   <!--Se genera un formulario el cual manda el valor 
                     de las variables por method post y así mismo genera 
                     una llamada al controlador validar.php al cual envía
                      los datos por medio de un action
                     -->
-                  <form class="login-form" method="POST" action="controlador/validar.php">
+                    <form class="login-form" method="POST" action="controlador/ValidarCorre.php">
                     <!--Genera el espacio para introducir el id del usuario y envía el dato usuario
                       por medio del method post del formulario
                       -->
@@ -34,19 +36,20 @@
                       por medio del method post del formulario
                       -->
                     
-                    <input type="password" placeholder="Clave" name="clave" required>
-                    <button>Ingresar</button>
+                    
+                    <button>enviar</button>
 
                   </form>
                   <br>
-                  <a href="recContraseña.php" class="forgot__password--link">¿Olvidó su contraseña?</a>
+                  <a href="index.php" class="forgot__password--link">Atras</a>
                 </div>
               </div>
               </form>
+              
               </div> 
             
           </div>
         </div>
-      </div>   
+      </div>
 </body>
 </html>

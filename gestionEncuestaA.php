@@ -5,20 +5,22 @@
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
   
-  include "controlador/eliminarPre.php";
+  include "controlador/eliminarEncuesta.php";
 
   ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administrador</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link href='css/nav.css' rel='stylesheet' type='text/css'>
+ <link href='css/nav.css' rel='stylesheet' type='text/css'>
     <link href='css/formulario.css' rel='stylesheet' type='text/css'>
     
 </head>
+
 <body>
   
 <div class="page">
@@ -136,89 +138,85 @@
         <!--El formulario envía datos por medio del method post -->
         <div class="col-12 p-3">
         <form action="" method="get" class="col-10 p-3 m-auto formulario">
-           <h3>Gestion Test</h3>
+           <h3>Gestion Encuesta</h3>
            <hr    color="#000000";>
         </form>
         
         <?php
-          include "modelo/conexion.php";
-          $sql = $conexion->query("SELECT * FROM pregunta");
-        
-        ?>
-<!--Se genera el diseño de una tabla para organizar la información-->
-        <table class="table">
-        <thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">descripción</th>
+include "modelo/conexion.php";
 
-        <!-- Títulos de opciones -->
-        <th scope="col">Opción visual</th>
-        <th scope="col">Opción auditiva</th>
-        <th scope="col">Opción kinestesica</th>
+// Verificar si se ha enviado un filtro por materia
 
-        <!-- ... (otros títulos) ... -->
+$query = "SELECT * FROM encuesta "; 
 
-        <th scope="col"></th>
-    </tr>
+
+$resultado = mysqli_query($conexion, $query);
+?>
+
+
+
+<table class="table">
+<thead class="table bg-light text-dark table-striped table-bordered border-dark table-primary">
+<tr>
+    <th scope="col">Id </th>
+    <th scope="col">Descripción</th>
+    <th scope="col">Acciones</th>
+    <th scope="col">Consulta resultados</th>
+</tr>
 </thead>
-          <tbody class="table table table-striped table-hover table-bordered border-primary">
-            <!--Genera la llamada a la función conexión y genera una consulta a la base de datos de los registros 
-              y por medio de un ciclo obtiene los datos de los registros y los asigna a una variable para imprimirlos en pantalla 
+<tbody class="table table table-striped table-hover table-bordered border-primary">
+<?php
+while ($fila = mysqli_fetch_assoc($resultado)) {
+  $nombre = $fila['idEncuesta'];
+    echo '<tr>';
+    echo '<td>' . $fila['idEncuesta'] . '</td>';
+    echo '<td>' . $fila['descripcion'] . '</td>';
+    
+   
+    ?>
+      <td>
+            <!--Se crea un enlace por medio del cual se llama la función modificacionA.php
+              el cual es un icono de color amarillo que indica la modificación  
+              para llevar a cabo el llenado nuevo de los datos del registro el cual obtiene
+              la información por medio de un dato de control de arrastre que es el id 
               -->
-            <?php
-              //include "modelo/conexion.php";
-              
-              while($datos=$sql->fetch_object()){
-                $idPregunta = $datos->idpreguntas;
-                $sqlOpciones = $conexion->query("SELECT * FROM opcion WHERE idPregunta = $idPregunta");
-              ?>
-            <tr>
-              <td><?= $datos->idpreguntas ?></td>
-              <td><?= $datos->descripción_p ?></td>
-              
-               <?php
-                while ($opciones = $sqlOpciones->fetch_object()) {
-                echo '<td>' . $opciones->descripción_op . '</td>';
-                }
-               ?>
-               <td>
-                <!--Se crea un enlace por medio del cual se llama la función modificacionA.php
-                  el cual es un icono de color amarillo que indica la modificación  
-                  para llevar a cabo el llenado nuevo de los datos del registro el cual obtiene
-                  la información por medio de un dato de control de arrastre que es el id 
-                  -->
-                <a href="modificacionPre.php?id=<?= $datos->idpreguntas ?>" class="btn btn-small btn-warning">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" />
-                    <path d="M16 5l3 3" />
-                    <path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" />
-                  </svg>
+            <a href="modificacionEncuestaA.php?id=<?= $nombre ?>" class="btn btn-small btn-warning">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit-circle" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" />
+        <path d="M16 5l3 3" />
+        <path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" />
+    </svg>
+</a>
+
+            <!--Se crea un enlace por medio del cual se llama a sí misma 
+              la pagina para llevar a cabo la eliminación del registro además de
+              que llama la funcion Script con el onclick para llevar a 
+              cabo la función de eliminación 
+              -->
+            <a onclick="return eliminar()" href="gestionEncuestaA.php?id=<?= $nombre ?>"  class="btn btn-small btn-danger" >
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="10" y1="11" x2="10" y2="17" />
+                <line x1="14" y1="11" x2="14" y2="17" />
+                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+              </svg>
+            </a>
+           </td>
+           <td>
+           <a href="resultadoEncuesta.php?id=<?= $nombre ?>" class="btn btn-small btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+            <path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/></svg>
                 </a>
-                <!--Se crea un enlace por medio del cual se llama a sí misma 
-                  la pagina para llevar a cabo la eliminación del registro además de
-                  que llama la funcion Script con el onclick para llevar a 
-                  cabo la función de eliminación 
-                  -->
-                <a onclick="return eliminar()" href="gestionPreguntas.php?id=<?= $datos->idpreguntas ?>"  class="btn btn-small btn-danger" >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <line x1="4" y1="7" x2="20" y2="7" />
-                    <line x1="10" y1="11" x2="10" y2="17" />
-                    <line x1="14" y1="11" x2="14" y2="17" />
-                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                  </svg>
-                </a>
-              </td>
-             
-             
-            </tr>
-            <?php }
-              ?>
-          </tbody>
-        </table>
+                </td>
+    <?php
+    echo '</tr>';
+}
+?>
+</tbody>
+</table>
       </div>
     </div>
     </div>

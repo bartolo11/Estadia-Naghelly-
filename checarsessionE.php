@@ -9,7 +9,7 @@ $inactive_time = 60 * 60;
 if (!isset($_SESSION['nivelE'])) {
     echo '
     <script> 
-        alert("Por favor, debes iniciar sesión como profesor");
+        alert("Por favor, debes iniciar sesión como estudiante");
         window.location = "l.php";
     </script>
     ';

@@ -1,29 +1,29 @@
 <?php
 include "modelo/conexion.php";
 
-// ID del usuario específico
-$idUsuarioEspecifico = 1; // Aquí debes poner el ID del usuario específico
 
-// Consulta SQL para contar las ocurrencias de cada categoría para el usuario específico
-$sql = "SELECT categoria, COUNT(*) as conteo FROM rtest WHERE idUsuario = $idUsuarioEspecifico GROUP BY categoria";
+$idPreguntaEspecifica = 2; // Aquí debes poner el ID de la pregunta específica
+
+// Consulta SQL para contar las ocurrencias de cada nivelS para la pregunta específica y el usuario específico
+$sql = "SELECT nivelS, COUNT(*) as conteo FROM respuesta WHERE idPregunta = $idPreguntaEspecifica GROUP BY nivelS";
 
 $result = $conexion->query($sql);
 
-// Array para almacenar las categorías y sus conteos
-$categorias = [];
+// Array para almacenar los niveles y sus conteos
+$niveles = [];
 $conteos = [];
 
 // Procesar los resultados de la consulta
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        $categorias[] = $row["categoria"];
+        $niveles[] = $row["nivelS"];
         $conteos[] = $row["conteo"];
     }
 } else {
     echo "No se encontraron resultados.";
 }
 
-// Colores de las barras (puedes ajustar estos colores según tus preferencias)
+// Colores de las secciones del gráfico de pastel
 $colores = [
     'rgba(255, 99, 132, 0.5)',
     'rgba(54, 162, 235, 0.5)',
@@ -42,27 +42,27 @@ $conexion->close();
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gráfico de Categorías</title>
+    <title>Gráfico de Niveles</title>
     <!-- Enlace a Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Contenedor del gráfico -->
     <div style="width: 400px; height: 400px;">
-        <canvas id="graficoCategorias"></canvas>
+        <canvas id="graficoNiveles"></canvas>
     </div>
 
     <script>
         // Datos para el gráfico
-        var categorias = <?php echo json_encode($categorias); ?>;
+        var niveles = <?php echo json_encode($niveles); ?>;
         var conteos = <?php echo json_encode($conteos); ?>;
         var colores = <?php echo json_encode($colores); ?>;
 
         // Configuración del gráfico
         var config = {
-            type: 'bar',
+            type: 'pie', // Cambiar el tipo de gráfico a pie
             data: {
-                labels: categorias,
+                labels: niveles,
                 datasets: [{
                     label: 'Número de ocurrencias',
                     data: conteos,
@@ -72,16 +72,13 @@ $conexion->close();
                 }]
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                responsive: true,
+                maintainAspectRatio: false
             }
         };
 
         // Crear el gráfico
-        var ctx = document.getElementById('graficoCategorias').getContext('2d');
+        var ctx = document.getElementById('graficoNiveles').getContext('2d');
         var myChart = new Chart(ctx, config);
     </script>
 </body>

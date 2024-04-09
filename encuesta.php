@@ -6,7 +6,7 @@
   //inicia la sesión para poder utilizar los datos de la sesión
   session_start();
 
-
+  include "controlador/estadoMaterial.php";
 
   $idE = $_SESSION["idA"];
 
@@ -67,7 +67,7 @@ $result2 = $conexion->query($sql2);
             <a href="MaterialEstCom.php">Material recomendado<a></li>
              <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
             <path d="M0 96C0 43 43 0 96 0h96V190.7c0 13.4 15.5 20.9 26 12.5L272 160l54 43.2c10.5 8.4 26 .9 26-12.5V0h32 32c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32H384 96c-53 0-96-43-96-96V96zM64 416c0 17.7 14.3 32 32 32H352V384H96c-17.7 0-32 14.3-32 32z"/>
-          </svg> <a href="MaterialEst.php">  Material<a> </li>
+          </svg> <a href="MaterialEst.php"> Material<a> </li>
           <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="20" viewBox="0 0 640 512">
             <path d="M0 24C0 10.7 10.7 0 24 0H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24C10.7 48 0 37.3 0 24zM0 488c0-13.3 10.7-24 24-24H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24zM83.2 160a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM32 320c0-35.3 28.7-64 64-64h96c12.2 0 23.7 3.4 33.4 9.4c-37.2 15.1-65.6 47.2-75.8 86.6H64c-17.7 0-32-14.3-32-32zm461.6 32c-10.3-40.1-39.6-72.6-77.7-87.4c9.4-5.5 20.4-8.6 32.1-8.6h96c35.3 0 64 28.7 64 64c0 17.7-14.3 32-32 32H493.6zM391.2 290.4c32.1 7.4 58.1 30.9 68.9 61.6c3.5 10 5.5 20.8 5.5 32c0 17.7-14.3 32-32 32h-224c-17.7 0-32-14.3-32-32c0-11.2 1.9-22 5.5-32c10.5-29.7 35.3-52.8 66.1-60.9c7.8-2.1 16-3.1 24.5-3.1h96c7.4 0 14.7 .8 21.6 2.4zm44-130.4a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM321.6 96a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/>
           </svg><a href="respuestas.php"> Test<a></li>
@@ -76,7 +76,7 @@ $result2 = $conexion->query($sql2);
         </svg><a href="resultadoVistaEstudiante.php"> Mi estilo<a>
              </li>
        
-             <li>
+          <li>
             
 
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -135,10 +135,6 @@ $result2 = $conexion->query($sql2);
               </nav>
           </li>
 
-          <li><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
-          <path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM105.8 229.3c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L216 328.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V314.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1H158.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM160 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
-        </svg><a href="encuesta.php"> encuesta<a></li>
-
 
           
           <li><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="23" height="23" viewBox="0 0 24 24" stroke-width="2" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -150,75 +146,55 @@ $result2 = $conexion->query($sql2);
         </ul>
       </div>
     </div>
-    <div class=" col-7 p-1 view" >
-    <div id="notifications-container" style="margin-top: 10px;"></div>
-    <?php 
-// Consulta los datos de la tabla "novedades"
-$sql_nov = "SELECT tituloNov, descripciónNov, fechaPub FROM novedades";
-$result_nov = $conexion->query($sql_nov);
+    <div class="view">
+      
+      <div class="container-fluid row">
+        <!--El formulario envía datos por medio del method post -->
+        <form  class=" col-10 p-3 formulario" method="POST"  >
+          <h3>Encuesta de satisfacción</h3>
+          <hr    color="#000000";>
 
-// Almacena los resultados de la consulta en un array
-$novedades = [];
-while ($row = $result_nov->fetch_assoc()) {
-    $novedades[] = $row;
-}
-?>
-
-<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <?php
-        // Cuenta el número de resultados obtenidos de la base de datos para los indicadores
-        $indicator_count = 0;
-        foreach ($novedades as $novedad) {
-            echo '<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="' . $indicator_count . '"';
-            if ($indicator_count == 0) {
-                echo ' class="active"';
-            }
-            echo ' aria-label="Slide ' . ($indicator_count + 1) . '"></button>';
-            $indicator_count++;
-        }
+          <?php
+          include "modelo/conexion.php";
+          include "controlador/registroREncuesta.php";
+          $Npreguntas = 0;
+          
+          $sql = $conexion->query("SELECT * FROM encuesta");
+        
+          while($datos = $sql->fetch_object()){
+            $Npreguntas++;
+            $id= $datos->idEncuesta;
+            
+                   
+            
         ?>
-    </div>
-    <div class="carousel-inner">
-        <?php
-        // Contador para los ítems del carrusel
-        $item_count = 0;
-        foreach ($novedades as $novedad) {
-            echo '<div class="carousel-item';
-            if ($item_count == 0) {
-                echo ' active';
-            }
-            echo '">';
-            // Mantén la imagen estática en el carrusel
-            echo '<img src="img/vistaA.jpeg" class="d-block w-100" alt="...">';
-            // Muestra los datos dinámicos de la base de datos
-            echo '<div class="carousel-caption d-none d-md-block">';
-            echo '<h4>Novedades</h4>'; 
-            echo '<h5>' . $novedad["tituloNov"] . '</5>';
-            echo '<h5>' . $novedad["descripciónNov"] . '</5>';
-            echo '<p>' . $novedad["fechaPub"] . '</P>';
-            echo '</div>';
-            echo '</div>';
-            $item_count++;
-        }
-        ?>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>  
+        
+        <div class="mb-3">
+          <input type="hidden" name="idpreguntas<?= $Npreguntas ?>" value="<?= $id ?>">
+          <label for="exampleInputEmail1" class="input_textual"><?= $datos->descripcion ?></label>
+          <select class="form-select" name="categoria<?= $Npreguntas ?>" id="categoria" required>
+            <option value="">Selecciona una opción</option>
+            <option value="Nada Satisfecho">😡 Nada Satisfecho</option>
+            <option value="Poco satisfecho">🙁 Poco satisfecho</option>
+            <option value="Neutral">😐 Neutral</option>
+            <option value="Muy satisfecho">😊 Muy satisfecho</option>
+            <option value="Totalmente satisfecho">😀 Totalmente satisfecho</option>
+          </select>
+        </div>
 
+        <?php
+        
+          }
+        ?>
+        <input type="hidden" name="Npreguntas" value="<?php echo $Npreguntas; ?>">
+
+        <button type="submit" class="btn btn-outline-primary" name="btnregistrar" value="ok">registrar respuestas</button>
+      </form>
+     
     </div>
   </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
 
 </body>
 </html>

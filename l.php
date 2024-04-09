@@ -41,7 +41,7 @@
 
                   </form>
                   <br>
-                  <a href="#" class="forgot__password--link">¿Olvidó su contraseña?</a>
+                  <a href="recContraseña.php" class="forgot__password--link">¿Olvidó su contraseña?</a>
                 </div>
               </div>
               </form>
