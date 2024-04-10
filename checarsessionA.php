@@ -3,7 +3,7 @@
    error_reporting(0);
    
    // Tiempo de inactividad permitido en segundos (por ejemplo, 15 minutos)
-   $inactive_time = 60 * 60;
+   $inactive_time = 15 * 60;
    
    // Verifica si la sesión existe y si el usuario está autenticado
    if (!isset($_SESSION['nivelA'])) {
