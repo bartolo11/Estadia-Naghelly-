@@ -41,7 +41,7 @@
      $codigo = generarContrasena();
      $nuevaC = md5($codigo);
      $to = $_POST['usuario'];
-     $subject = 'Recuperacion de contraseña';
+     $subject = 'Recuperación de contraseña';
      $msg = "Esta sera tu nueva contraseña para ingresar a tu cuenta: \r\n" . $codigo;
      $header = 'From: grno200401@upemor.edu.mx' . "\r\n".
      'Reply-To: grno200401@upemor.edu.mx' . "\r\n".
@@ -79,7 +79,7 @@
          $codigo = generarContrasena();
          $nuevaC = md5($codigo);
          $to = $_POST['usuario'];
-         $subject = 'Recuperacion de contraseña';
+         $subject = 'Recuperación de contraseña';
          $msg = "Esta sera tu nueva contraseña para ingresar a tu cuenta: \r\n" . $codigo;
          $header = 'From: grno200401@upemor.edu.mx' . "\r\n".
          'Reply-To: grno200401@upemor.edu.mx' . "\r\n".
@@ -117,7 +117,7 @@
              $codigo = generarContrasena();
              $nuevaC = md5($codigo);
              $to = $_POST['usuario'];
-             $subject = 'Recuperacion de contraseña';
+             $subject = 'Recuperación de contraseña';
              $msg = "Esta sera tu nueva contraseña para ingresar a tu cuenta: \r\n" . $codigo;
              $header = 'From: grno200401@upemor.edu.mx' . "\r\n".
              'Reply-To: grno200401@upemor.edu.mx' . "\r\n".
